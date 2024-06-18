@@ -81,6 +81,12 @@ class DB:
         except Exception as e:
             logger.error(e)
 
+    async def delete_schedule_message_by_group_id(self, group_id: int):
+        try:
+            self.schedule.delete_one({"group_id": group_id})
+        except Exception as e:
+            logger.error(e)
+
     async def get_group_names(self):
         try:
             ans = [el for el in self.chat_groups.find()]
@@ -144,5 +150,13 @@ class DB:
             fil = {'group_id': group_id}
             update_op = {'$set': {'group_id': ''}}
             self.chats.update_many(fil, update_op)
+        except Exception as e:
+            logger.error(e)
+
+    async def get_group_by_chat_id(self, chat_id):
+        try:
+            chat = [el for el in self.chats.find({'_id': int(chat_id)})][0]
+            group_id = chat['group_id']
+            return group_id
         except Exception as e:
             logger.error(e)
