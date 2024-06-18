@@ -88,10 +88,10 @@ class DB:
         except Exception as e:
             logger.error(e)
 
-    async def get_all_chats_from_group_by_id(self, group_id: int):
+    async def get_all_chats_from_group_by_id(self, group_id: ObjectId):
         try:
-            ans = [el["title"]
-                   for el in self.chats.find({'group_id': ObjectId(group_id)})]
+            ans = [el
+                   for el in self.chats.find({'group_id': str(group_id)})]
             return ans
         except Exception as e:
             logger.error(e)
@@ -125,5 +125,24 @@ class DB:
             update_op = {'$set': {'group_id': group_id}}
             fil = {'_id': int(chat_id)}
             self.chats.update_one(fil, update_op)
+        except Exception as e:
+            logger.error(e)
+
+    async def remove_chat_from_group(self, chat_id):
+        try:
+            update_op = {'$set': {'group_id': ''}}
+            fil = {'_id': int(chat_id)}
+            self.chats.update_one(fil, update_op)
+        except Exception as e:
+            logger.error(e)
+
+    async def delete_group(self, group_id):
+        try:
+            self.chat_groups.delete_one({'_id': ObjectId(group_id)})
+
+            # update all data
+            fil = {'group_id': group_id}
+            update_op = {'$set': {'group_id': ''}}
+            self.chats.update_many(fil, update_op)
         except Exception as e:
             logger.error(e)

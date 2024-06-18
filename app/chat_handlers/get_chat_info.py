@@ -20,7 +20,7 @@ async def get_chat_info(callback: CallbackQuery):
         text=f'<b>Чат:</b> {chinf["title"]}\n<b>ID чата</b>: {chinf["_id"]}' +
         f'\n<b>В группе:</b> {chinf.get("group_id", "None")}',
         parse_mode='HTML',
-        reply_markup=await kb.chat_info_kb(chinf["_id"], bool(chinf.get("group_id", False)))
+        reply_markup=await kb.chat_info_kb(chinf["_id"], chinf.get("group_id", False))
     )
     logger.debug('Success: get the chat info')
     await callback.answer('')

@@ -95,7 +95,8 @@ async def command_group(message: Message):
     groups = await db.get_group_names()
     text = 'Ваши группы:\n\n'
     for idx, el in enumerate(groups):
-        text += f'{idx + 1}) {el["title"]}: {";".join(await db.get_all_chats_from_group_by_id(el["_id"]))}\n'
+        text += f'{idx + 1}) {el["title"]}: {";".join(
+            i['title'] for i in await db.get_all_chats_from_group_by_id(el["_id"]))}\n'
 
     await message.answer(
         text=text,

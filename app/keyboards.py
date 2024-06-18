@@ -13,12 +13,13 @@ async def start_kb():
     return builder.adjust(1).as_markup()
 
 
-async def chat_info_kb(chatid: str, in_group: bool):
+async def chat_info_kb(chatid: str, group_id):
 
     # create a send posts
     rassilka = [InlineKeyboardButton(
         text='Рассылка ТОЛЬКО в чат', callback_data='rass_chat' + str(chatid))]
-    if in_group:
+    if group_id:
+        group_title = await db.get_group_info_by_id(group_id)
         rassilka.append(InlineKeyboardButton(
             text='Рассылка в группу чатов', callback_data='rass_group' + str(chatid)))
 
