@@ -42,16 +42,10 @@ async def rass_chat_msg(message: Message, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
-    if message.photo or message.video:
-        await state.update_data(message={
-            'caption': message.caption,
-            'photo': message.photo,
-            'video': message.video,
-        })
-    else:
-        await state.update_data(message={
-            'text': message.text
-        })
+    await state.update_data(message={
+        'message_id': message.message_id,
+        'from_chat_id': message.chat.id,
+    })
 
     await message.answer(
         text='Шаблон сообщения сохранен!\nТеперь введите время, когда надо отправить сообщение\n' +
