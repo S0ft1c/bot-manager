@@ -72,3 +72,14 @@ async def command_add_exec(message: Message):
             await message.answer(text='Такой чат уже есть!')
         else:
             await message.answer(text='Чат успешно добавлен!')
+
+
+@ router_admin_handlers.message(Command('test'))
+async def test(message: Message):
+    if not is_admin(message):
+        logger.warning(
+            f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+
+    print(message)
+    await message.answer('Смотри в консоль)')

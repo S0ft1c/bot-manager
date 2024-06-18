@@ -27,9 +27,15 @@ class DB:
             except Exception as e:
                 logger.warning('Collection chats already exists')
 
+            try:
+                self.db.create_collection('schedule')
+            except Exception as e:
+                logger.warning('Collection schedule already exists')
+
             # adding all collections as self vars
             self.chats = self.db['chats']
             self.chat_groups = self.db['chat-groups']
+            self.schedule = self.db['schedule']
         except Exception as e:
             logger.error(e)
 
@@ -52,5 +58,24 @@ class DB:
             chat = [el for el in self.chats.find({'_id': int(chatid)})][0]
             logger.debug(chat)
             return chat
+        except Exception as e:
+            logger.error(e)
+
+    async def schedule_message(self, data: dict):
+        try:
+            self.schedule.insert_one(data)
+        except Exception as e:
+            logger.error(e)
+
+    async def get_scheduled_messages(self):
+        try:
+            msgs = [el for el in self.schedule.find()]
+            return msgs
+        except Exception as e:
+            logger.error(e)
+
+    async def delete_schedule_message_by_id(self, chatid: int):
+        try:
+            self.schedule.delete_one({"chatid": chatid})
         except Exception as e:
             logger.error(e)
