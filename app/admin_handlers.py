@@ -74,7 +74,7 @@ async def command_add_exec(message: Message):
             await message.answer(text='Чат успешно добавлен!')
 
 
-@ router_admin_handlers.message(Command('test'))
+@router_admin_handlers.message(Command('test'))
 async def test(message: Message):
     if not is_admin(message):
         logger.warning(
@@ -83,3 +83,21 @@ async def test(message: Message):
 
     print(message)
     await message.answer('Смотри в консоль)')
+
+
+@router_admin_handlers.message(Command('group'))
+async def command_group(message: Message):
+    if not is_admin(message):
+        logger.warning(
+            f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+
+    groups = await db.get_group_names()
+    text = 'Ваши группы:\n\n'
+    for idx, el in enumerate(groups):
+        text += f'{idx + 1}) {el["title"]}: {";".join(await db.get_all_chats_from_group_by_id(el["_id"]))}\n'
+
+    await message.answer(
+        text=text,
+        reply_markup=await kb.group_kb(groups)
+    )

@@ -28,3 +28,50 @@ async def chat_info_kb(chatid: str, in_group: bool):
         ],
     )
     return builder
+
+
+async def group_kb(groups):
+    builder = InlineKeyboardBuilder()
+
+    for el in groups:
+        builder.add(
+            InlineKeyboardButton(
+                text=el['title'], callback_data='group_inf' + str(el['_id']))
+        )
+        builder.add(
+            InlineKeyboardButton(
+                text='Удалить', callback_data='del_group' + str(el['_id']))
+        )
+    builder.add(InlineKeyboardButton(
+        text='Добавить группу', callback_data='add_group'))
+    return builder.adjust(2).as_markup()
+
+
+async def group_info_kb(chats, group_id):
+    builder = InlineKeyboardBuilder()
+
+    for el in chats:
+        builder.add(
+            InlineKeyboardButton(
+                text=el['title'], callback_data='info' + str(el['_id'])),
+        )
+        builder.add(
+            InlineKeyboardButton(
+                text='Удалить чат', callback_data='del_chat_from_group' + str(el['_id']))
+        )
+    builder.add(
+        InlineKeyboardButton(text='Добавить новый чат в группу',
+                             callback_data='add_new_chat_to_group' + str(group_id))
+    )
+    return builder.adjust(2).as_markup()
+
+
+async def add_chat_to_group_kb(chats, group_id):
+    builder = InlineKeyboardBuilder()
+
+    for el in chats:
+        builder.add(InlineKeyboardButton(
+            text=el['title'], callback_data='add_chat_to_group_action' +
+            str(el['_id']) + ':' + group_id
+        ))
+    return builder.adjust(1).as_markup()

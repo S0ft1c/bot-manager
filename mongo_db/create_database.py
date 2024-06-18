@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from pymongo.errors import CollectionInvalid
+from bson.objectid import ObjectId
 from dotenv import load_dotenv
 import os
 from loguru import logger
@@ -77,5 +78,52 @@ class DB:
     async def delete_schedule_message_by_id(self, chatid: int):
         try:
             self.schedule.delete_one({"chatid": chatid})
+        except Exception as e:
+            logger.error(e)
+
+    async def get_group_names(self):
+        try:
+            ans = [el for el in self.chat_groups.find()]
+            return ans
+        except Exception as e:
+            logger.error(e)
+
+    async def get_all_chats_from_group_by_id(self, group_id: int):
+        try:
+            ans = [el["title"]
+                   for el in self.chats.find({'group_id': ObjectId(group_id)})]
+            return ans
+        except Exception as e:
+            logger.error(e)
+
+    async def get_group_info_by_id(self, group_id):
+        try:
+            ans = [el
+                   for el in self.chat_groups.find({"_id": ObjectId(group_id)})
+                   ][0]
+
+            logger.debug(f'the element is {ans}')
+            return ans
+        except Exception as e:
+            logger.error(e)
+
+    async def create_group(self, group_name: str):
+        try:
+            self.chat_groups.insert_one({'title': group_name})
+        except Exception as e:
+            logger.error(e)
+
+    async def get_all_nongroup_chats(self):
+        try:
+            ans = [el for el in self.chats.find() if not el.get('group_id')]
+            return ans
+        except Exception as e:
+            logger.error(e)
+
+    async def add_chat_to_group_action(self, chat_id, group_id):
+        try:
+            update_op = {'$set': {'group_id': group_id}}
+            fil = {'_id': int(chat_id)}
+            self.chats.update_one(fil, update_op)
         except Exception as e:
             logger.error(e)
