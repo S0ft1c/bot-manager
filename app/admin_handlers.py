@@ -5,6 +5,7 @@ from loguru import logger
 from utils import is_admin
 from mongo_db import db
 import app.keyboards as kb
+from asyncio import sleep
 
 router_admin_handlers = Router()
 
@@ -89,6 +90,8 @@ async def test(message: Message):
 
     print(message)
     await message.answer('Смотри в консоль)')
+    await sleep(10)
+    await message.answer('Sleep awaited')
 
 
 @router_admin_handlers.message(Command('group'))

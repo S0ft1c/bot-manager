@@ -33,10 +33,16 @@ class DB:
             except Exception as e:
                 logger.warning('Collection schedule already exists')
 
+            try:
+                self.db.create_collection('users')
+            except Exception as e:
+                logger.warning('Collection schedule already exists')
+
             # adding all collections as self vars
             self.chats = self.db['chats']
             self.chat_groups = self.db['chat-groups']
             self.schedule = self.db['schedule']
+            self.users = self.db['users']
         except Exception as e:
             logger.error(e)
 
@@ -267,8 +273,17 @@ class DB:
         except Exception as e:
             logger.error(e)
 
-    async def add_warn_to_user(self, chat_id, user_id):
+    async def add_warn_to_user(self, user_id):
         try:
-            pass
+            user = [el for el in self.users.find({'_id': int(user_id)})]
+            if not user:
+                self.users.insert_one({'_id': int(user_id)})
+                w = 0
+            else:
+                w = user[0]['warn']
+            self.users.update_one(
+                filter={'_id': int(user_id)},
+                update={'$set': {'warn': w + 1}}
+            )
         except Exception as e:
             logger.error(e)
