@@ -160,3 +160,23 @@ class DB:
             return group_id
         except Exception as e:
             logger.error(e)
+
+    async def create_ad(self, data):
+        try:
+            data['all'] = True
+            self.schedule.insert_one(data)
+        except Exception as e:
+            logger.error(e)
+
+    async def get_chats(self):
+        try:
+            chats = [el for el in self.chats.find()]
+            return chats
+        except Exception as e:
+            logger.error(e)
+
+    async def delete_schedule_message_by_obj_id(self, obj_id):
+        try:
+            self.schedule.delete_one({'_id': obj_id})
+        except Exception as e:
+            logger.error(e)

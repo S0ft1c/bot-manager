@@ -6,6 +6,7 @@ from utils import convert_data
 import datetime
 from .chat_sender import chat_sender
 from .group_sender import group_sender
+from .ad_sender import ad_sender
 
 
 async def send_scheduled_messages(bot: Bot):
@@ -17,7 +18,9 @@ async def send_scheduled_messages(bot: Bot):
             for msg in msgs:
                 if convert_data(msg['time']) <= datetime.datetime.now():
                     logger.debug('found scheduled message. Sending...')
-                    if not msg.get('group_id', False):
+                    if msg.get('all', False):
+                        await ad_sender(bot, msg)
+                    elif not msg.get('group_id', False):
                         await chat_sender(bot, msg)
                     else:
                         await group_sender(bot, msg)
