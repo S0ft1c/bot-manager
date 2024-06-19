@@ -112,3 +112,29 @@ async def spam_menu_kb(chat_id):
                               callback_data='spam_time_life' + chat_id)]
     ])
     return builder
+
+
+async def spam_sanctions(chat_id):
+    chat = await db.get_chat_info_by_id(chat_id)
+    sanction = chat.get('sanction', False)
+
+    sss = [
+        ['Предупреждение', 'warn'],
+        ['Ограничение', 'mute'],
+        ['Блокировка', 'ban'],
+        ['Исключение', 'kick']
+    ]
+
+    builder = InlineKeyboardBuilder()
+    for name in sss:
+        if name[1] == sanction:
+            builder.add(InlineKeyboardButton(
+                text=name[0] + '!!!',
+                callback_data='change_sanction' + name[1] + chat_id
+            ))
+        else:
+            builder.add(InlineKeyboardButton(
+                text=name[0],
+                callback_data='change_sanction' + name[1] + chat_id
+            ))
+    return builder.adjust(1).as_markup()
