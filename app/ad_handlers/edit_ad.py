@@ -22,6 +22,8 @@ async def edit_ad(callback: CallbackQuery, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if callback.message.chat.type != 'private':
+        return
 
     ad_id = callback.data.replace('edit_ad', '')
     await state.update_data(prev_id=ad_id)
@@ -49,6 +51,8 @@ async def edit_ad_ans(message: Message, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if message.chat.type != 'private':
+        return
 
     if message.text == 'ДА':
         await state.set_state(EditAd.message)
@@ -63,6 +67,8 @@ async def edit_ad_message(message: Message, state: FSMContext):
     if not is_admin(message):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+    if message.chat.type != 'private':
         return
 
     await state.update_data(message={
@@ -82,6 +88,8 @@ async def edit_ad_time(message: Message, state: FSMContext):
     if not is_admin(message):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+    if message.chat.type != 'private':
         return
 
     if convert_data(message.text):

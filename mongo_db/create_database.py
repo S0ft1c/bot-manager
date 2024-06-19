@@ -209,3 +209,66 @@ class DB:
             self.schedule.delete_one({'_id': ObjectId(ad_id)})
         except Exception as e:
             logger.error(e)
+
+    async def add_spam_w_to_chat(self, chat_id, words: list):
+        try:
+            chat_data = [el
+                         for el in self.chats.find({'_id': int(chat_id)})
+                         ][0]
+            spam_w: list = chat_data.get('spam_w', [])
+            spam_w.extend(words)
+            spam_w = list(set(spam_w))
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'spam_w': spam_w}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def remove_spam_w_from_chat(self, chat_id, words: list):
+        try:
+            chat_data = [el
+                         for el in self.chats.find({'_id': int(chat_id)})
+                         ][0]
+            spam_w = set(chat_data.get('spam_w', []))
+            spam_w = list(spam_w - set(words))
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'spam_w': spam_w}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def peresilka_change(self, chat_id):
+        try:
+            peresilka = [el
+                         for el in self.chats.find({'_id': int(chat_id)})
+                         ][0]
+            peresilka = peresilka.get('peresilka', False)
+            logger.debug(f'peresilka now -> {not peresilka}')
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'peresilka': not peresilka}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def ssilka_change(self, chat_id):
+        try:
+            ssilka = [el
+                      for el in self.chats.find({'_id': int(chat_id)})
+                      ][0]
+            ssilka = ssilka.get('ssilka', True)
+            logger.debug(f'ssilka now -> {not ssilka}')
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'ssilka': not ssilka}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def add_warn_to_user(self, chat_id, user_id):
+        try:
+            pass
+        except Exception as e:
+            logger.error(e)

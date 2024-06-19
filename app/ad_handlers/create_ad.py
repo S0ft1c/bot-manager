@@ -20,6 +20,8 @@ async def command_create_ad(message: Message, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if message.chat.type != 'private':
+        return
     await message.answer(text='Прекрасно! Создание рекламной рассылки началось. Отправьте сообщение сюда.')
     await state.set_state(CreateAd.message)
 
@@ -29,6 +31,8 @@ async def create_ad_message_id(message: Message, state: FSMContext):
     if not is_admin(message):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+    if message.chat.type != 'private':
         return
     await state.update_data(message={
         'message_id': message.message_id,
@@ -47,6 +51,8 @@ async def create_ad_time(message: Message, state: FSMContext):
     if not is_admin(message):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+    if message.chat.type != 'private':
         return
     if convert_data(message.text):
         await state.update_data(time=message.text)

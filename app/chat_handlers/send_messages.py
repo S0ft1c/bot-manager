@@ -23,6 +23,8 @@ async def rass_chat(callback: CallbackQuery, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if callback.message.chat.type != 'private':
+        return
 
     await state.set_state(SendChat.chatid)
     await state.update_data(chatid=int('-' + callback.data.split('-')[-1]))
@@ -42,6 +44,9 @@ async def rass_chat_msg(message: Message, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if message.chat.type != 'private':
+        return
+
     await state.update_data(message={
         'message_id': message.message_id,
         'from_chat_id': message.chat.id,
@@ -60,6 +65,8 @@ async def rass_chat_time(message: Message, state: FSMContext):
     if not is_admin(message):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+    if message.chat.type != 'private':
         return
 
     # check for good pattern
@@ -87,6 +94,8 @@ async def rass_group(callback: CallbackQuery, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if callback.message.chat.type != 'private':
+        return
 
     await state.set_state(SendGroup.group_id)
     await state.update_data(
@@ -108,6 +117,9 @@ async def rass_group_msg(message: Message, state: FSMContext):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if message.chat.type != 'private':
+        return
+
     await state.update_data(message={
         'message_id': message.message_id,
         'from_chat_id': message.chat.id,
@@ -126,6 +138,8 @@ async def rass_group_time(message: Message, state: FSMContext):
     if not is_admin(message):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+        return
+    if message.chat.type != 'private':
         return
 
     # check for good pattern

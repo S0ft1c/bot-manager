@@ -14,6 +14,9 @@ async def get_chat_info(callback: CallbackQuery):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if callback.message.chat.type != 'private':
+        return
+
     chinf = await db.get_chat_info_by_id('-' + callback.data.split('-')[-1])
 
     await callback.message.edit_text(

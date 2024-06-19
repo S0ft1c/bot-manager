@@ -12,6 +12,8 @@ async def del_ad(callback: CallbackQuery):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if callback.message.chat.type != 'private':
+        return
 
     ad_id = callback.data.replace('del_ad', '')
     await db.del_ad(ad_id)

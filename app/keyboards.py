@@ -23,9 +23,14 @@ async def chat_info_kb(chatid: str, group_id):
         rassilka.append(InlineKeyboardButton(
             text='Рассылка в группу чатов', callback_data='rass_group' + str(chatid)))
 
+    # create a spam settings
+    spam_settings = [InlineKeyboardButton(
+        text='Настройки спам фильтров', callback_data='spam_settings_chat' + str(chatid))]
+
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
             rassilka,
+            spam_settings,
         ],
     )
     return builder
@@ -89,3 +94,21 @@ async def get_all_ads(ads):
             text='Удалить рассылку', callback_data='del_ad' + str(ad['_id'])
         ))
     return builder.adjust(2).as_markup()
+
+
+async def spam_menu_kb(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Добавить спам слова',
+                              callback_data='add_spam_w' + chat_id)],
+        [InlineKeyboardButton(text='Убрать спам слова',
+                              callback_data='remove_spam_w' + chat_id)],
+        [InlineKeyboardButton(text='Изменить пересылку сообщений',
+                              callback_data='peresilka_change' + chat_id)],
+        [InlineKeyboardButton(text='Изаменить возможности ссылок',
+                              callback_data='ssilka_change' + chat_id)],
+        [InlineKeyboardButton(text='Настройка санкций',
+                              callback_data='spam_ssankcii' + chat_id)],
+        [InlineKeyboardButton(text='Настройка времени жизни сообщения',
+                              callback_data='spam_time_life' + chat_id)]
+    ])
+    return builder

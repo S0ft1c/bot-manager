@@ -14,6 +14,8 @@ async def command_get_ads(message: Message):
         logger.warning(
             f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
         return
+    if message.chat.type != 'private':
+        return
 
     ads = await db.get_all_ads()
 
