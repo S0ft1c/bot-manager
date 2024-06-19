@@ -296,3 +296,12 @@ class DB:
             )
         except Exception as e:
             logger.error(e)
+
+    async def update_secs_in_chat(self, chat_id, secs):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'secs': secs}}
+            )
+        except Exception as e:
+            logger.error(e)
