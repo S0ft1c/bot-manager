@@ -14,12 +14,11 @@ from scheduled import schedule_worker
 
 load_dotenv()
 TOKEN = os.environ.get('TG_BOT_TOKEN')
+bot = Bot(token=TOKEN)
+dp = Dispatcher()
 
 
 async def main():
-    bot = Bot(token=TOKEN)
-    dp = Dispatcher()
-
     process = Process(target=schedule_worker,
                       args=[bot])  # for scheduled messages
     process.start()

@@ -76,3 +76,16 @@ async def add_chat_to_group_kb(chats, group_id):
             str(el['_id']) + ':' + group_id
         ))
     return builder.adjust(1).as_markup()
+
+
+async def get_all_ads(ads):
+    builder = InlineKeyboardBuilder()
+
+    for ad in ads:
+        builder.add(InlineKeyboardButton(
+            text=ad['time'], callback_data='edit_ad' + str(ad['_id'])
+        ))
+        builder.add(InlineKeyboardButton(
+            text='Удалить рассылку', callback_data='del_ad' + str(ad['_id'])
+        ))
+    return builder.adjust(2).as_markup()

@@ -180,3 +180,32 @@ class DB:
             self.schedule.delete_one({'_id': obj_id})
         except Exception as e:
             logger.error(e)
+
+    async def get_all_ads(self):
+        try:
+            ads = [el for el in self.schedule.find({'all': True})]
+            return ads
+        except Exception as e:
+            logger.error(e)
+
+    async def get_ad_by_id(self, ad_id):
+        try:
+            ad = [el for el in self.schedule.find({'_id': ObjectId(ad_id)})][0]
+            return ad
+        except Exception as e:
+            logger.error(e)
+
+    async def edit_ad(self, ad_info: dict):
+        try:
+            self.schedule.delete_one({'_id': ObjectId(ad_info['prev_id'])})
+            ad_info.pop('prev_id')
+            ad_info['all'] = True
+            self.schedule.insert_one(ad_info)
+        except Exception as e:
+            logger.error(e)
+
+    async def del_ad(self, ad_id):
+        try:
+            self.schedule.delete_one({'_id': ObjectId(ad_id)})
+        except Exception as e:
+            logger.error(e)

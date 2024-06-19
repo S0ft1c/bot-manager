@@ -51,6 +51,7 @@ async def create_ad_time(message: Message, state: FSMContext):
     if convert_data(message.text):
         await state.update_data(time=message.text)
         ad_info = await state.get_data()
+        await state.clear()
         await db.create_ad(ad_info)
         await message.answer(text='Реклама успешно добавлена!')
     else:
