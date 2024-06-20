@@ -31,11 +31,16 @@ async def chat_info_kb(chatid: str, group_id):
     admin_add_remove = [InlineKeyboardButton(
         text='Добавить/удалить админов', callback_data='admin_add_remove' + str(chatid))]
 
+    # create a delete posts
+    delete_posts = [InlineKeyboardButton(
+        text='Удаление постов', callback_data='delete_posts' + str(chatid))]
+
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
             rassilka,
             spam_settings,
             admin_add_remove,
+            delete_posts,
         ],
     )
     return builder

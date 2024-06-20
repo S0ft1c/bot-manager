@@ -11,6 +11,7 @@ from mongo_db import db
 import time
 import datetime
 from scheduled import schedule_worker
+from middle_ware import MainMiddleware
 
 load_dotenv()
 TOKEN = os.environ.get('TG_BOT_TOKEN')
@@ -23,6 +24,7 @@ async def main():
                       args=[bot])  # for scheduled messages
     process.start()
 
+    dp.message.outer_middleware(MainMiddleware())  # for saving to db
     dp.include_router(router=router)
     await dp.start_polling(bot)
 

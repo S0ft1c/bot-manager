@@ -39,7 +39,7 @@ class DB:
                 logger.warning('Collection users already exists')
 
             try:
-                self.db.create_collection('admins')
+                self.db.create_collection('messages')
             except Exception as e:
                 logger.warning('Collection admins already exists')
 
@@ -48,7 +48,7 @@ class DB:
             self.chat_groups = self.db['chat-groups']
             self.schedule = self.db['schedule']
             self.users = self.db['users']
-            self.admins = self.db['admins']
+            self.messages = self.db['messages']
         except Exception as e:
             logger.error(e)
 
@@ -309,5 +309,23 @@ class DB:
                 filter={'_id': int(chat_id)},
                 update={'$set': {'secs': secs}}
             )
+        except Exception as e:
+            logger.error(e)
+
+    async def save_message(self, message: dict):
+        try:
+            self.messages.insert_one(message)
+        except Exception as e:
+            logger.error(e)
+
+    async def get_users_messages_for_del(self, chat_id, user_id):
+        try:
+            msgs = [el for el in self.messages.find(
+                {'chat_id': int(chat_id), 'user_id': int(user_id)}
+            )]
+            self.messages.delete_many(
+                filter={'chat_id': int(chat_id), 'user_id': int(user_id)}
+            )
+            return msgs
         except Exception as e:
             logger.error(e)
