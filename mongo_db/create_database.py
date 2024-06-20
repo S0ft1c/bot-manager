@@ -36,13 +36,19 @@ class DB:
             try:
                 self.db.create_collection('users')
             except Exception as e:
-                logger.warning('Collection schedule already exists')
+                logger.warning('Collection users already exists')
+
+            try:
+                self.db.create_collection('admins')
+            except Exception as e:
+                logger.warning('Collection admins already exists')
 
             # adding all collections as self vars
             self.chats = self.db['chats']
             self.chat_groups = self.db['chat-groups']
             self.schedule = self.db['schedule']
             self.users = self.db['users']
+            self.admins = self.db['admins']
         except Exception as e:
             logger.error(e)
 

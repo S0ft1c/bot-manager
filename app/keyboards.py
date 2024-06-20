@@ -27,10 +27,15 @@ async def chat_info_kb(chatid: str, group_id):
     spam_settings = [InlineKeyboardButton(
         text='Настройки спам фильтров', callback_data='spam_settings_chat' + str(chatid))]
 
+    # create a admin add remove
+    admin_add_remove = [InlineKeyboardButton(
+        text='Добавить/удалить админов', callback_data='admin_add_remove' + str(chatid))]
+
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
             rassilka,
             spam_settings,
+            admin_add_remove,
         ],
     )
     return builder
@@ -137,4 +142,15 @@ async def spam_sanctions(chat_id):
                 text=name[0],
                 callback_data='change_sanction' + name[1] + chat_id
             ))
+    return builder.adjust(1).as_markup()
+
+
+async def admin_add_remove(admins, chat_id):
+    builder = InlineKeyboardBuilder()
+
+    for admin in admins:
+        builder.add(InlineKeyboardButton(
+            text=f'Удалить {admin.user.first_name}',
+            callback_data='delete_admin' + str(admin.user.id) + str(chat_id)
+        ))
     return builder.adjust(1).as_markup()
