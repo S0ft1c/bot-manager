@@ -2,6 +2,8 @@ from aiogram import Router
 from aiogram.types import Message
 from utils import is_admin
 from aiogram.filters import Command
+from loguru import logger
+from mongo_db import db
 
 router_ban_user = Router()
 
@@ -20,9 +22,10 @@ async def ban_user(message: Message):
         await message.chat.ban(
             user_id=message.reply_to_message.from_user.id
         )
+        chat_id = message.chat.id
 
         await message.answer(
-            text=f'Пользователь {man} забанен'
+            text=await db.get_text_conf(chat_id, 'ban')
         )
     else:
         await message.answer(

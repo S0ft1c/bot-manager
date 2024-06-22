@@ -3,6 +3,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 from aiogram.filters import Command
 from mongo_db import db
+from loguru import logger
 
 router_warn_user = Router()
 
@@ -19,9 +20,10 @@ async def warn_user(message: Message):
     if message.reply_to_message:
         man = message.reply_to_message.from_user.id
         await db.add_warn_to_user(man)
+
+        chat_id = message.chat.id
         await message.answer(
-            text=f'Предупреждаю пользователя {
-                message.reply_to_message.from_user.first_name}'
+            text=await db.get_text_conf(chat_id, 'warn')
         )
     else:
         await message.answer(

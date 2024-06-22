@@ -3,6 +3,8 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 import datetime
+from loguru import logger
+from mongo_db import db
 
 router_mute_user = Router()
 restrictions = {
@@ -34,8 +36,10 @@ async def mute_user(message: Message):
             permissions=restrictions,
             until_date=datetime.datetime.now() + datetime.timedelta(days=1)
         )
+
+        chat_id = message.chat.id
         await message.answer(
-            text=f'Пользователь {man} замучен на 1 сутки'
+            text=await db.get_text_conf(chat_id, 'mute')
         )
     else:
         await message.answer(

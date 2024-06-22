@@ -374,3 +374,11 @@ class DB:
             )
         except Exception as e:
             logger.error(e)
+
+    async def get_text_conf(self, chat_id, type):
+        try:
+            op = f'{type}_msg'
+            ttt = [el for el in self.chats.find({'_id': int(chat_id)})][0]
+            return ttt[op]
+        except Exception as e:
+            logger.error(e)

@@ -2,9 +2,21 @@ from utils import is_admin
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
-import datetime
+from loguru import logger
+from mongo_db import db
 
 router_kick_user = Router()
+permissions = {
+    'can_send_messages': True,
+    'can_send_audios': True,
+    'can_send_documents': True,
+    'can_send_documents': True,
+    'can_send_documents': True,
+    'can_send_video_notes': True,
+    'can_send_voice_notes': True,
+    'can_send_polls': True,
+    'can_send_other_messages': True
+}
 
 
 @router_kick_user.message(Command('kick_user'))
@@ -34,8 +46,9 @@ async def kick_user(message: Message):
             permissions=permissions
         )
 
+        chat_id = message.chat.id
         await message.answer(
-            text=f'Пользователь {man} кикнут'
+            text=await db.get_text_conf(chat_id, 'kick')
         )
     else:
         await message.answer(

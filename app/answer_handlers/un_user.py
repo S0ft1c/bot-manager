@@ -3,6 +3,8 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
 import datetime
+from loguru import logger
+from mongo_db import db
 
 router_un_user = Router()
 permissions = {
@@ -41,8 +43,9 @@ async def mute_user(message: Message):
             permissions=permissions
         )
 
+        chat_id = message.chat.id
         await message.answer(
-            text=f'Пользователь {man} cнова в строю'
+            text=await db.get_text_conf(chat_id, 'un')
         )
     else:
         await message.answer(
