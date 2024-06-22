@@ -28,6 +28,7 @@ async def ban_user(message: Message):
             text=await db.get_text_conf(chat_id, 'ban')
         )
         await wait_for_deletion(result_message)
+        await wait_for_deletion(message)
     else:
         await message.answer(
             text='Выполните команду в ответ на сообщение пользователя, которого надо забанить'

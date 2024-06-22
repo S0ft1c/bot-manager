@@ -13,6 +13,24 @@ class ClearSystem(BaseMiddleware):
         event: Message,
         data: Dict[str, Any]
     ) -> Any:
-        if type(event) == Message and event.chat.type in ['group', 'supergroup']:
-            print(event)
+        try:
+            if type(event) == Message and event.chat.type in ['group', 'supergroup']:
+                print(event)
+
+                sss = [event.new_chat_members, event.left_chat_member,
+                       event.new_chat_title, event.new_chat_photo, event.delete_chat_photo, event.group_chat_created,
+                       event.supergroup_chat_created,
+                       event.pinned_message
+                       ]
+
+                system_notification = [
+                    1 if el is not None else 0
+                    for el in sss
+                ]
+                if sum(system_notification) != 0:
+                    logger.warning('System notification')
+                    await event.delete()
+        except Exception as e:
+            pass
+
         return await handler(event, data)
