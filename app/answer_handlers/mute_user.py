@@ -1,4 +1,4 @@
-from utils import is_admin
+from utils import is_admin, wait_for_deletion
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.filters import Command
@@ -38,9 +38,10 @@ async def mute_user(message: Message):
         )
 
         chat_id = message.chat.id
-        await message.answer(
+        result_message = await message.answer(
             text=await db.get_text_conf(chat_id, 'mute')
         )
+        await wait_for_deletion(result_message)
     else:
         await message.answer(
             text='Выполните команду в ответ на сообщение пользователя, которого надо замутить'

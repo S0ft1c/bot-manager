@@ -382,3 +382,9 @@ class DB:
             return ttt[op]
         except Exception as e:
             logger.error(e)
+
+    async def get_secs(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0]['secs']
+        except Exception as e:
+            logger.error(e)

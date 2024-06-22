@@ -1,6 +1,6 @@
 from aiogram import Router
 from aiogram.types import Message
-from utils import is_admin
+from utils import is_admin, wait_for_deletion
 from aiogram.filters import Command
 from loguru import logger
 from mongo_db import db
@@ -24,9 +24,10 @@ async def ban_user(message: Message):
         )
         chat_id = message.chat.id
 
-        await message.answer(
+        result_message = await message.answer(
             text=await db.get_text_conf(chat_id, 'ban')
         )
+        await wait_for_deletion(result_message)
     else:
         await message.answer(
             text='Выполните команду в ответ на сообщение пользователя, которого надо забанить'
