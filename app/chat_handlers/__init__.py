@@ -5,6 +5,7 @@ from .spam_setting_handlers import router_spam_settings_handler
 from .admin_add_remove import router_admin_add_remove
 from .delete_posts import router_delete_posts
 from .delete_system_and_users_messages import router_delete_system_and_users_messages
+from .text_conf import router_text_conf
 
 router_chat_handlers = Router()
 
@@ -16,3 +17,4 @@ router_chat_handlers.include_router(router=router_admin_add_remove)
 router_chat_handlers.include_router(router=router_delete_posts)
 router_chat_handlers.include_router(
     router=router_delete_system_and_users_messages)
+router_chat_handlers.include_router(router=router_text_conf)

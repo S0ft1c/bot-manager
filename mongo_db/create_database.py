@@ -329,3 +329,48 @@ class DB:
             return msgs
         except Exception as e:
             logger.error(e)
+
+    async def update_warn_message(self, chat_id, msg):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'warn_msg': msg}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def update_mute_message(self, chat_id, msg):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'mute_msg': msg}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def update_ban_message(self, chat_id, msg):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'ban_msg': msg}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def update_kick_message(self, chat_id, msg):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'kick_msg': msg}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def update_un_message(self, chat_id, msg):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'un_msg': msg}}
+            )
+        except Exception as e:
+            logger.error(e)

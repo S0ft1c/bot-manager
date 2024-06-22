@@ -31,6 +31,10 @@ async def chat_info_kb(chatid: str, group_id):
     admin_add_remove = [InlineKeyboardButton(
         text='Добавить/удалить админов', callback_data='admin_add_remove' + str(chatid))]
 
+    # create the text config file
+    text_conf = [InlineKeyboardButton(
+        text='Настройка сообщений бота действия в чате.', callback_data='text_conf' + str(chatid))]
+
     # create a delete posts
     delete_posts = [InlineKeyboardButton(
         text='Удаление постов', callback_data='delete_posts' + str(chatid))]
@@ -40,6 +44,7 @@ async def chat_info_kb(chatid: str, group_id):
             rassilka,
             spam_settings,
             admin_add_remove,
+            text_conf,
             delete_posts,
         ],
     )
@@ -159,3 +164,19 @@ async def admin_add_remove(admins, chat_id):
             callback_data='delete_admin' + str(admin.user.id) + str(chat_id)
         ))
     return builder.adjust(1).as_markup()
+
+
+async def text_conf_kb(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Предупреждение /warn',
+                              callback_data='text_change_warn' + str(chat_id))],
+        [InlineKeyboardButton(text='Ограничение на отправку сообщений /mute',
+                              callback_data='text_change_mute' + str(chat_id))],
+        [InlineKeyboardButton(text='Блокировка /ban',
+                              callback_data='text_change_ban' + str(chat_id))],
+        [InlineKeyboardButton(text='Исключение /kick',
+                              callback_data='text_change_kick' + str(chat_id))],
+        [InlineKeyboardButton(text='Снятие ограничеий /un',
+                              callback_data='text_change_un' + str(chat_id))],
+    ])
+    return builder
