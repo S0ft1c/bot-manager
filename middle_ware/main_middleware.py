@@ -13,12 +13,15 @@ class MainMiddleware(BaseMiddleware):
         event: Message,
         data: Dict[str, Any]
     ) -> Any:
-        if type(event) == Message and event.chat.type in ['group', 'supergroup']:
-            msg = {
-                'message_id': event.message_id,
-                'user_id': event.from_user.id,
-                'chat_id': event.chat.id
-            }
-            await db.save_message(msg)
+        try:
+            if type(event) == Message and event.chat.type in ['group', 'supergroup']:
+                msg = {
+                    'message_id': event.message_id,
+                    'user_id': event.from_user.id,
+                    'chat_id': event.chat.id
+                }
+                await db.save_message(msg)
+        except:
+            pass
 
         return await handler(event, data)

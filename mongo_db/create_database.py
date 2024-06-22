@@ -265,6 +265,12 @@ class DB:
         except Exception as e:
             logger.error(e)
 
+    async def get_peresilka(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('peresilka', False)
+        except Exception as e:
+            logger.error(e)
+
     async def ssilka_change(self, chat_id):
         try:
             ssilka = [el
@@ -276,6 +282,12 @@ class DB:
                 filter={'_id': int(chat_id)},
                 update={'$set': {'ssilka': not ssilka}}
             )
+        except Exception as e:
+            logger.error(e)
+
+    async def get_ssilka(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('ssilka', True)
         except Exception as e:
             logger.error(e)
 
@@ -386,5 +398,17 @@ class DB:
     async def get_secs(self, chat_id):
         try:
             return [el for el in self.chats.find({'_id': int(chat_id)})][0]['secs']
+        except Exception as e:
+            logger.error(e)
+
+    async def get_spam_w(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('spam_w', [])
+        except Exception as e:
+            logger.error(e)
+
+    async def get_sanction(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('sanction', 'warn')
         except Exception as e:
             logger.error(e)
