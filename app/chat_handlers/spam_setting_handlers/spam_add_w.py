@@ -4,6 +4,7 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from mongo_db import db
+from loguru import logger
 
 router_spam_add_w = Router()
 

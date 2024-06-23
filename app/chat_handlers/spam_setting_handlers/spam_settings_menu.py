@@ -3,6 +3,7 @@ from aiogram.types import CallbackQuery
 from mongo_db import db
 import app.keyboards as kb
 from utils import is_admin
+from loguru import logger
 
 router_spam_settings_menu = Router()
 

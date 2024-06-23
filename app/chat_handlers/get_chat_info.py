@@ -12,7 +12,7 @@ router_get_chat_info = Router()
 async def get_chat_info(callback: CallbackQuery):
     if not is_admin(callback):
         logger.warning(
-            f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+            f'Somebody (not an admin) tried to access the bot logic!!! His info -> {callback.message.from_user.id}')
         return
     if callback.message.chat.type != 'private':
         return

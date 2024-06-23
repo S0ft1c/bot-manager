@@ -39,6 +39,10 @@ async def chat_info_kb(chatid: str, group_id):
     delete_posts = [InlineKeyboardButton(
         text='Удаление постов', callback_data='delete_posts' + str(chatid))]
 
+    # create reputation system
+    rep_system = [InlineKeyboardButton(
+        text='Система репутации', callback_data='rep_sys_inf' + str(chatid))]
+
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
             rassilka,
@@ -46,8 +50,21 @@ async def chat_info_kb(chatid: str, group_id):
             admin_add_remove,
             text_conf,
             delete_posts,
+            rep_system
         ],
     )
+    return builder
+
+
+async def rep_sys_info(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Изменить состояние системы репутации',
+                              callback_data='rep_sys_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Добавить слова репутации',
+                              callback_data='rep_w_add' + str(chat_id))],
+        [InlineKeyboardButton(text='Убрать слова репутации',
+                              callback_data='rep_w_remove' + str(chat_id))]
+    ])
     return builder
 
 

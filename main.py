@@ -11,7 +11,7 @@ from mongo_db import db
 import time
 import datetime
 from scheduled import schedule_worker
-from middle_ware import MainMiddleware, AntispamMiddleware, ClearSystem
+from middle_ware import MainMiddleware, AntispamMiddleware, ClearSystem, ReputationSystem
 
 load_dotenv()
 TOKEN = os.environ.get('TG_BOT_TOKEN')
@@ -28,6 +28,7 @@ async def main():
     dp.message.outer_middleware(AntispamMiddleware())  # for antispam defense
     # for clearing system notifications
     dp.message.outer_middleware(ClearSystem())
+    dp.message.outer_middleware(ReputationSystem())  # for reputation system
 
     dp.include_router(router=router)
     await dp.start_polling(bot)

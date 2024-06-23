@@ -412,3 +412,83 @@ class DB:
             return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('sanction', 'warn')
         except Exception as e:
             logger.error(e)
+
+    async def get_reputation_w(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('reputation_w', [])
+        except Exception as e:
+            logger.error(e)
+
+    async def get_rep_sys_workin(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('rep_sys_workin', False)
+        except Exception as e:
+            logger.error(e)
+
+    async def add_rep_to_user(self, chat_id, user_id):
+        try:
+            chat = [el for el in self.chats.find({'_id': int(chat_id)})][0]
+            if not chat.get('user_rep', False):
+                self.chats.update_one(
+                    filter={'_id': int(chat_id)},
+                    update={'$set': {'user_rep': {str(user_id): 1}}}
+                )
+            else:
+                user_rep = chat.get('user_rep', {})
+                user_rep[str(user_id)] = user_rep.get(str(user_id), 0) + 1
+                self.chats.update_one(
+                    filter={'_id': int(chat_id)},
+                    update={'$set': {'user_rep': user_rep}}
+                )
+        except Exception as e:
+            logger.error(e)
+
+    async def get_user_rep(self, chat_id):
+        try:
+            user_rep = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('user_rep', [])
+            return user_rep
+        except Exception as e:
+            logger.error(e)
+
+    async def rep_sys_workin_change(self, chat_id):
+        try:
+            rep_sys_workin = [el
+                              for el in self.chats.find({'_id': int(chat_id)})
+                              ][0]
+            rep_sys_workin = rep_sys_workin.get('rep_sys_workin', False)
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'rep_sys_workin': not rep_sys_workin}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def add_rep_w_to_chat(self, chat_id, words: list):
+        try:
+            chat_data = [el
+                         for el in self.chats.find({'_id': int(chat_id)})
+                         ][0]
+            spam_w: list = chat_data.get('reputation_w', [])
+            spam_w.extend(words)
+            spam_w = list(set(spam_w))
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'reputation_w': spam_w}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def remove_rep_w_from_chat(self, chat_id, words: list):
+        try:
+            chat_data = [el
+                         for el in self.chats.find({'_id': int(chat_id)})
+                         ][0]
+            reputation_w = set(chat_data.get('reputation_w', []))
+            reputation_w = list(reputation_w - set(words))
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'reputation_w': reputation_w}}
+            )
+        except Exception as e:
+            logger.error(e)
