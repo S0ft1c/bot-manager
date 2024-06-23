@@ -43,6 +43,10 @@ async def chat_info_kb(chatid: str, group_id):
     rep_system = [InlineKeyboardButton(
         text='Система репутации', callback_data='rep_sys_inf' + str(chatid))]
 
+    # create for the restrict all
+    restrict_all = [InlineKeyboardButton(
+        text='Возможность писать сообщения (всем)', callback_data='restrict_all_inf' + str(chatid))]
+
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
             rassilka,
@@ -50,9 +54,20 @@ async def chat_info_kb(chatid: str, group_id):
             admin_add_remove,
             text_conf,
             delete_posts,
-            rep_system
+            rep_system,
+            restrict_all
         ],
     )
+    return builder
+
+
+async def restrict_all_kb(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(
+            text='Запретить всем отправлять сообщения', callback_data='restrict_all_on' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Разрешить всем отправлять сообщения', callback_data='restrict_all_off' + str(chat_id))],
+    ])
     return builder
 
 

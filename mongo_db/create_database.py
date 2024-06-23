@@ -443,6 +443,13 @@ class DB:
         except Exception as e:
             logger.error(e)
 
+    async def get_all_messages_from_chat(self, chat_id):
+        try:
+            msgs = [el for el in self.messages.find({'chat_id': int(chat_id)})]
+            return msgs
+        except Exception as e:
+            logger.error(e)
+
     async def get_user_rep(self, chat_id):
         try:
             user_rep = [el for el in self.chats.find(

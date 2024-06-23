@@ -39,11 +39,15 @@ async def mute_user(message: Message):
 
         chat_id = message.chat.id
         result_message = await message.answer(
-            text=await db.get_text_conf(chat_id, 'mute')
+            text=await db.get_text_conf(chat_id, 'mute'),
+            disable_notification=True
         )
-        await wait_for_deletion(result_message)
-        await wait_for_deletion(message)
+
     else:
-        await message.answer(
-            text='Выполните команду в ответ на сообщение пользователя, которого надо замутить'
+        result_message = await message.answer(
+            text='Выполните команду в ответ на сообщение пользователя, которого надо замутить',
+            disable_notification=True
         )
+
+    await wait_for_deletion(result_message)
+    await wait_for_deletion(message)

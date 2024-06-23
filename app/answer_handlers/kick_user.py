@@ -48,11 +48,15 @@ async def kick_user(message: Message):
 
         chat_id = message.chat.id
         result_message = await message.answer(
-            text=await db.get_text_conf(chat_id, 'kick')
+            text=await db.get_text_conf(chat_id, 'kick'),
+            disable_notification=True
         )
-        await wait_for_deletion(result_message)
-        await wait_for_deletion(message)
+
     else:
-        await message.answer(
-            text='Выполните команду в ответ на сообщение пользователя, которого надо кикнуть'
+        result_message = await message.answer(
+            text='Выполните команду в ответ на сообщение пользователя, которого надо кикнуть',
+            disable_notification=True
         )
+
+    await wait_for_deletion(result_message)
+    await wait_for_deletion(message)
