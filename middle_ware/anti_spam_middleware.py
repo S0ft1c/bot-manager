@@ -83,6 +83,8 @@ class AntispamMiddleware(BaseMiddleware):
                                 user_id=user_id,
                                 permissions=permissions
                             )
+                    await event.delete()
+                    return
         except Exception as e:
             pass
         return await handler(event, data)
