@@ -499,3 +499,35 @@ class DB:
             )
         except Exception as e:
             logger.error(e)
+
+    async def get_bye_config(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('bye_config', {})
+        except Exception as e:
+            logger.error(e)
+
+    async def update_bye_message(self, chat_id, message):
+        try:
+            bbb = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('bye_config', {})
+            bbb['message'] = message
+
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'bye_config': bbb}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def update_bye_sleep_time(self, chat_id, sleep_time):
+        try:
+            bbb = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('bye_config', {})
+            bbb['sleep_time'] = sleep_time
+
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'bye_config': bbb}}
+            )
+        except Exception as e:
+            logger.error(e)

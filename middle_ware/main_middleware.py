@@ -14,6 +14,8 @@ class MainMiddleware(BaseMiddleware):
         data: Dict[str, Any]
     ) -> Any:
         try:
+            # link = await event.bot.create_chat_invite_link(event.chat.id, name='yayaa', creates_join_request=True)
+            # print(link)
             if type(event) == Message and event.chat.type in ['group', 'supergroup']:
                 msg = {
                     'message_id': event.message_id,

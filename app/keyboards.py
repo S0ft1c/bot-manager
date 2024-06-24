@@ -15,6 +15,10 @@ async def start_kb():
 
 async def chat_info_kb(chatid: str, group_id):
 
+    # create a hi and bye
+    hi_and_bye = [InlineKeyboardButton(text='Приветствия и прощания',
+                                       callback_data='hi_and_bye_menu' + str(chatid))]
+
     # create a send posts
     rassilka = [InlineKeyboardButton(
         text='Рассылка ТОЛЬКО в чат', callback_data='rass_chat' + str(chatid))]
@@ -49,6 +53,7 @@ async def chat_info_kb(chatid: str, group_id):
 
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
+            hi_and_bye,
             rassilka,
             spam_settings,
             admin_add_remove,
@@ -210,5 +215,25 @@ async def text_conf_kb(chat_id):
                               callback_data='text_change_kick' + str(chat_id))],
         [InlineKeyboardButton(text='Снятие ограничеий /un',
                               callback_data='text_change_un' + str(chat_id))],
+    ])
+    return builder
+
+
+async def hi_and_buy_menu(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Приветственное сообщение',
+                              callback_data='hi_config' + str(chat_id))],
+        [InlineKeyboardButton(text='Прощальное сообщение',
+                              callback_data='bye_config' + str(chat_id))],
+    ])
+    return builder
+
+
+async def bye_menu(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Изменить сообщение',
+                              callback_data='bye_message_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить время до удаления',
+                              callback_data='bye_time_change' + str(chat_id))]
     ])
     return builder

@@ -3,6 +3,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 import app.keyboards as kb
 from mongo_db import db
+from loguru import logger
 
 router_spam_sanctions = Router()
 
