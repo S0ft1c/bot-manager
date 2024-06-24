@@ -531,3 +531,98 @@ class DB:
             )
         except Exception as e:
             logger.error(e)
+
+    async def get_hi_config(self, chat_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('hi_config', {})
+        except Exception as e:
+            logger.error(e)
+
+    async def create_new_hi_config(self, chat_id, typee: str):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'hi_config': {'type': typee}}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def erase_hi_config(self, chat_id):
+        try:
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'hi_config': {}}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def change_hi_message(self, chat_id, message):
+        try:
+            hhh = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('hi_config', {})
+            hhh['message'] = message
+
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'hi_config': hhh}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def update_hi_sleep_time(self, chat_id, sleep_time):
+        try:
+            hhh = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('hi_config', {})
+            hhh['sleep_time'] = sleep_time
+
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'hi_config': hhh}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def update_members_change(self, chat_id, cnt):
+        try:
+            hhh = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('hi_config', {})
+            hhh['members_came'] = cnt
+
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'hi_config': hhh}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def add_channel_to_hi(self, chat_id, link):
+        try:
+
+            hhh = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('hi_config', {})
+            arr: list = hhh.get('channels', [])
+            arr.append(link)
+            hhh['channels'] = arr
+
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'hi_config': hhh}}
+            )
+        except Exception as e:
+            logger.error(e)
+
+    async def rmv_channel_from_hi(self, chat_id, link):
+        try:
+
+            hhh = [el for el in self.chats.find(
+                {'_id': int(chat_id)})][0].get('hi_config', {})
+            arr: list = hhh.get('channels', [])
+            arr.remove(link)
+            hhh['channels'] = arr
+
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {'hi_config': hhh}}
+            )
+        except Exception as e:
+            logger.error(e)

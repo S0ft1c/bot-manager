@@ -237,3 +237,67 @@ async def bye_menu(chat_id):
                               callback_data='bye_time_change' + str(chat_id))]
     ])
     return builder
+
+
+async def new_hi_config(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Перелив в другие каналы',
+                              callback_data='hi_type_pereliv' + str(chat_id))],
+        [InlineKeyboardButton(text='Пригласить определенное количество людей',
+                              callback_data='hi_type_priglasit' + str(chat_id))],
+        [InlineKeyboardButton(text='Использовать и то и другое',
+                              callback_data='hi_type_combined' + str(chat_id))]
+    ])
+    return builder
+
+
+async def hi_config_pereliv(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Добавить каналы',
+                              callback_data='hi_pereliv_chanells_menu' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить сообщение',
+                              callback_data='hi_message_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить время до удаления',
+                              callback_data='hi_time_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Поменять конфигурацию (ВСЕ УДАЛИТСЯ)',
+                              callback_data='new_hi_confiig' + str(chat_id))]
+    ])
+    return builder
+
+
+async def hi_config_priglasit(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Изменить количество людей',
+                              callback_data='hi_members_came_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить сообщение',
+                              callback_data='hi_message_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить время до удаления',
+                              callback_data='hi_time_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Поменять конфигурацию (ВСЕ УДАЛИТСЯ)',
+                              callback_data='new_hi_confiig' + str(chat_id))]
+    ])
+    return builder
+
+
+async def hi_config_combined(chat_id):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Добавить каналы',
+                              callback_data='hi_pereliv_chanells_menu' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить количество людей',
+                              callback_data='hi_members_came_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить сообщение',
+                              callback_data='hi_message_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Изменить время до удаления',
+                              callback_data='hi_time_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Поменять конфигурацию (ВСЕ УДАЛИТСЯ)',
+                              callback_data='new_hi_confiig' + str(chat_id))]
+    ])
+    return builder
+
+
+async def hi_pereliv_chanells(channels):
+    builder = InlineKeyboardBuilder()
+    for el in channels:
+        builder.add(InlineKeyboardButton(text=f'УДАЛИТЬ {el}',
+                                         callback_data='hi_del_channel' + el))
+    return builder.adjust(1).as_markup()
