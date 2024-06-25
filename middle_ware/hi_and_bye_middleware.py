@@ -4,6 +4,7 @@ from loguru import logger
 from typing import *
 from mongo_db import db
 from asyncio import sleep
+import app.keyboards as kb
 
 
 class HiAndByeMiddleware(BaseMiddleware):
@@ -31,6 +32,67 @@ class HiAndByeMiddleware(BaseMiddleware):
                     )
                     await sleep(bye_config.get('sleep_time', 5))
                     await result_message.delete()
+                    return await handler(event, data)
+
+            # if its new chat member
+            elif event.new_chat_members is not None and type(event) == Message and \
+                    event.chat.type in ['group', 'supergroup']:
+
+                hi_config = await db.get_hi_config(event.chat.id)
+                match hi_config.get('type', False):
+                    case False:
+                        pass
+                    case 'pereliv':
+                        message = hi_config.get('message')
+                        channels = hi_config.get('channels')
+                        sleep_time = hi_config.get('sleep_time')
+                        kkb = await kb.welcome_message_pereliv(channels)
+                        result_msg = await event.bot.send_message(
+                            text=message,
+                            reply_markup=kkb,
+                            chat_id=event.chat.id
+                        )
+                        await sleep(sleep_time)
+                        await result_msg.delete()
+                        return await handler(event, data)
+
+                    case 'priglasit':
+                        link = f'https://t.me/stephans_programming_test_bot?start={
+                            event.chat.id}|{event.from_user.id}'
+                        members_came = hi_config.get('members_came')
+                        sleep_time = hi_config.get('sleep_time')
+                        message = hi_config.get('message')
+                        message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
+                                    f'Тебе надо пригласить {members_came}.')
+                        result_msg = await event.bot.send_message(
+                            text=message,
+                            chat_id=event.chat.id
+                        )
+                        await sleep(sleep_time)
+                        await result_msg.delete()
+                        return await handler(event, data)
+
+                    case 'combined':
+                        message = hi_config.get('message')
+
+                        link = f'https://t.me/stephans_programming_test_bot?start={
+                            event.chat.id}|{event.from_user.id}'
+                        members_came = hi_config.get(members_came)
+                        message = hi_config.get('message')
+                        message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
+                                    f'Тебе надо пригласить {members_came}.')
+
+                        channels = hi_config.get('channels')
+                        sleep_time = hi_config.get('sleep_time')
+                        kkb = await kb.welcome_message_pereliv(channels)
+                        result_msg = await event.bot.send_message(
+                            text=message,
+                            reply_markup=kkb,
+                            chat_id=event.chat.id
+                        )
+                        await sleep(sleep_time)
+                        await result_msg.delete()
+                        return await handler(event, data)
 
         except Exception as e:
             pass

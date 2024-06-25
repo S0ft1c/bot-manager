@@ -19,7 +19,7 @@ async def hi_message_change(callback: CallbackQuery, state: FSMContext):
     chat_id = callback.data.replace('hi_message_change', '')
     hi_config = await db.get_hi_config(chat_id)
 
-    text = f'Текущий текст сообщения:\n{hi_config.get('messsage', 'тут пусто...')}\n' + \
+    text = f'Текущий текст сообщения:\n{hi_config.get('message', 'тут пусто...')}\n' + \
         f'Введите свой текст, чтобы изменить этот. Используйте `%username%`, чтобы вставить имя пользователя.'
 
     await state.update_data(chat_id=chat_id)

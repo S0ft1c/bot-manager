@@ -25,7 +25,7 @@ async def hi_pereliv_chanells_menu(callback: CallbackQuery, state: FSMContext):
     channels = hi_config.get('channels', [])
 
     text = f'Вот каналы, которые сейчас прикреплены:\n{"\n".join(channels)}\n\n' + \
-        'Если хотите добавить еще канал - просто напишите ссылку'
+        'Если хотите добавить еще канал - просто напишите id канала'
 
     await callback.answer('')
     await callback.message.answer(

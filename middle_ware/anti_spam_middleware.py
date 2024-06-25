@@ -86,5 +86,5 @@ class AntispamMiddleware(BaseMiddleware):
                     await event.delete()
                     return
         except Exception as e:
-            pass
+            logger.error(e)
         return await handler(event, data)

@@ -11,7 +11,8 @@ from mongo_db import db
 import time
 import datetime
 from scheduled import schedule_worker
-from middle_ware import MainMiddleware, AntispamMiddleware, ClearSystem, ReputationSystem, HiAndByeMiddleware
+from middle_ware import (MainMiddleware, AntispamMiddleware, ClearSystem,
+                         ReputationSystem, HiAndByeMiddleware, AcceptMessageMiddleware)
 
 load_dotenv()
 TOKEN = os.environ.get('TG_BOT_TOKEN')
@@ -25,6 +26,8 @@ async def main():
     process.start()
 
     dp.message.outer_middleware(HiAndByeMiddleware())  # for hi and bye logics
+    # for non great users
+    dp.message.outer_middleware(AcceptMessageMiddleware())
     dp.message.outer_middleware(MainMiddleware())  # for saving to db
     dp.message.outer_middleware(AntispamMiddleware())  # for antispam defense
     # for clearing system notifications

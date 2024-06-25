@@ -301,3 +301,18 @@ async def hi_pereliv_chanells(channels):
         builder.add(InlineKeyboardButton(text=f'УДАЛИТЬ {el}',
                                          callback_data='hi_del_channel' + el))
     return builder.adjust(1).as_markup()
+
+
+async def welcome_message_pereliv(channels):
+    builder = InlineKeyboardBuilder()
+    for el in channels:
+        builder.add(InlineKeyboardButton(text=f'Подпишись',
+                                         url=el.invite_link))
+    return builder.adjust(1).as_markup()
+
+
+async def start_kbkkbkb(link):
+    builder = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text='Вот наша группа', url=link.invite_link)]
+    ])
+    return builder

@@ -532,6 +532,25 @@ class DB:
         except Exception as e:
             logger.error(e)
 
+    async def get_came_users(self, chat_id, user_id):
+        try:
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get(str(user_id), 0)
+        except Exception as e:
+            logger.error(e)
+
+    async def ref_user_came(self, chat_id, user_id, event_user_id):
+        try:
+            ch_info = [el for el in self.chats.find({'_id': int(chat_id)})][0]
+            user_info = ch_info.get(user_id, [])
+            user_info.append(event_user_id)
+            user_info.append(user_id)
+            self.chats.update_one(
+                filter={'_id': int(chat_id)},
+                update={'$set': {user_id: user_info}}
+            )
+        except Exception as e:
+            logger.error()
+
     async def get_hi_config(self, chat_id):
         try:
             return [el for el in self.chats.find({'_id': int(chat_id)})][0].get('hi_config', {})
