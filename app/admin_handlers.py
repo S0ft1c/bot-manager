@@ -95,7 +95,7 @@ async def command_add_group(message: Message):
         chat_id = message.text.split()[-1]
 
         chat_inf = {
-            '_id': chat_id,
+            '_id': int(chat_id),
             'title': chat_id,  # FIXME: заглушка по title группы, зная только ее id
         }
         ress = await db.insert_chat(chat_inf)
