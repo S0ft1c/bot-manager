@@ -90,8 +90,7 @@ class HiAndByeMiddleware(BaseMiddleware):
                     case 'combined':
                         message = hi_config.get('message')
 
-                        link = f'https://t.me/stephans_programming_test_bot?start={
-                            event.chat.id}|{event.from_user.id}'
+                        link = await create_start_link(event.bot, f'{event.chat.id}00000{event.from_user.id}', False)
                         members_came = len(hi_config.get(members_came)) - 1
                         message = hi_config.get('message')
                         message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
