@@ -10,20 +10,27 @@ from utils import convert_data
 from mongo_db import db
 import time
 import datetime
-from scheduled import schedule_worker
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from scheduled import schedule_worker, send_scheduled_messages
 from middle_ware import (MainMiddleware, AntispamMiddleware, ClearSystem,
                          ReputationSystem, HiAndByeMiddleware, AcceptMessageMiddleware)
 
-load_dotenv()
-TOKEN = os.environ.get('TG_BOT_TOKEN')
-bot = Bot(token=TOKEN)
-dp = Dispatcher()
-
 
 async def main():
-    process = Process(target=schedule_worker,
-                      args=[bot])  # for scheduled messages
-    process.start()
+
+    load_dotenv()
+    TOKEN = os.environ.get('TG_BOT_TOKEN')
+    bot = Bot(token=TOKEN)
+    dp = Dispatcher()
+
+    # process = Process(target=schedule_worker,
+    #                   args=[bot])  # for scheduled messages
+    # process.start()
+    scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
+    scheduler.add_job(send_scheduled_messages, trigger='interval',
+                      seconds=60,
+                      kwargs={'bot': bot})
+    scheduler.start()
 
     dp.message.outer_middleware(HiAndByeMiddleware())  # for hi and bye logics
     # for non great users
@@ -37,7 +44,7 @@ async def main():
     dp.include_router(router=router)
     await dp.start_polling(bot)
 
-    process.join()  # for scheduled messages
+    # process.join()  # for scheduled messages
 
 
 if __name__ == '__main__':
