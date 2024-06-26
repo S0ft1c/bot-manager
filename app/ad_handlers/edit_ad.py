@@ -39,7 +39,7 @@ async def edit_ad(callback: CallbackQuery, state: FSMContext):
     )
     await state.set_state(EditAd.ans)
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Вот сообщение вашей рассылки. Напиши ДА (обязательно заглавными), если хотите изменить сообщение' +
         'Если менять его вы не хотите - НЕТ.'
     )

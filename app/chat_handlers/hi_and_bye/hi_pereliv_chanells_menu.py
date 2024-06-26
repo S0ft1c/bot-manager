@@ -28,9 +28,9 @@ async def hi_pereliv_chanells_menu(callback: CallbackQuery, state: FSMContext):
         'Если хотите добавить еще канал - просто напишите id канала'
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text=text,
-        reply_markup=await kb.hi_pereliv_chanells(channels)
+        reply_markup=await kb.hi_pereliv_chanells(channels, chat_id)
     )
 
 
@@ -57,6 +57,6 @@ async def hi_del_channel(callback: CallbackQuery, state: FSMContext):
     await db.rmv_channel_from_hi(chat_id, link)
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Ссылка успешно удалена!'
     )

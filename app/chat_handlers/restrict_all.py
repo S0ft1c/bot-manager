@@ -42,7 +42,7 @@ async def restrict_all_inf(callback: CallbackQuery):
     chat_id = callback.data.replace('restrict_all_inf', '')
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Выберите действие',
         reply_markup=await kb.restrict_all_kb(chat_id),
     )
@@ -72,8 +72,9 @@ async def restrict_all_on(callback: CallbackQuery):
             logger.warning(e)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Никто теперь не будет писать в эту группу!'
+    await callback.message.edit_text(
+        text='Никто теперь не будет писать в эту группу!',
+        reply_markup=await kb.back_to_spam_settings_chat(chat_id)
     )
 
 
@@ -101,6 +102,7 @@ async def restrict_all_on(callback: CallbackQuery):
             logger.warning(e)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Теперь все могут писать в эту группу!'
+    await callback.message.edit_text(
+        text='Теперь все могут писать в эту группу!',
+        reply_markup=await kb.back_to_spam_settings_chat(chat_id)
     )

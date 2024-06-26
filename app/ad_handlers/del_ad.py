@@ -19,4 +19,4 @@ async def del_ad(callback: CallbackQuery):
     await db.del_ad(ad_id)
 
     await callback.answer('')
-    await callback.message.answer(text='Рекламная рассылка успешно удалена!')
+    await callback.message.edit_text(text='Рекламная рассылка успешно удалена!')

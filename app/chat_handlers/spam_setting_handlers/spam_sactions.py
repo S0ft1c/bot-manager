@@ -20,7 +20,7 @@ async def spam_ssankcii(callback: CallbackQuery):
     chat_id = callback.data.replace('spam_ssankcii', '')
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Выберите санкции к спамеру!',
         reply_markup=await kb.spam_sanctions(chat_id)
     )

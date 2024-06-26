@@ -21,7 +21,7 @@ async def text_conf(callback: CallbackQuery):
 
     chat_id = callback.data.replace('text_conf', '')
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Выберите текст который вы хотите поменять!',
         reply_markup=await kb.text_conf_kb(chat_id)
     )
@@ -48,8 +48,9 @@ async def text_change_warn(callback: CallbackQuery, state: FSMContext):
     await state.set_state(Warn.msg)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Введите сообщение.'
+    await callback.message.edit_text(
+        text='Введите сообщение.',
+        reply_markup=await kb.back_to_text_conf(chat_id)
     )
 
 
@@ -67,7 +68,8 @@ async def text_change_warn_msg(message: Message, state: FSMContext):
     msg = message.text
     await db.update_warn_message(chat_id, msg)
 
-    await message.answer(text="Текст успешно обновлен!")
+    await message.answer(text="Текст успешно обновлен!",
+                         reply_markup=await kb.back_to_text_conf(chat_id))
 
 
 #  -- -- -- -- -- -- -- -- -- -- -- -- -- -- - -- - -- - -- - - - for mute
@@ -92,8 +94,9 @@ async def text_change_mute(callback: CallbackQuery, state: FSMContext):
     await state.set_state(Mute.msg)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Введите сообщение.'
+    await callback.message.edit_text(
+        text='Введите сообщение.',
+        reply_markup=await kb.back_to_text_conf(chat_id)
     )
 
 
@@ -111,7 +114,8 @@ async def text_change_mute_msg(message: Message, state: FSMContext):
     msg = message.text
     await db.update_mute_message(chat_id, msg)
 
-    await message.answer(text="Текст успешно обновлен!")
+    await message.answer(text="Текст успешно обновлен!",
+                         reply_markup=await kb.back_to_text_conf(chat_id))
 
 
 #  -- -- -- -- -- -- -- -- -- -- -- -- -- -- - -- - -- - -- - - - for ban
@@ -136,8 +140,9 @@ async def text_change_ban(callback: CallbackQuery, state: FSMContext):
     await state.set_state(Ban.msg)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Введите сообщение.'
+    await callback.message.edit_text(
+        text='Введите сообщение.',
+        reply_markup=await kb.back_to_text_conf(chat_id)
     )
 
 
@@ -155,7 +160,8 @@ async def text_change_ban_msg(message: Message, state: FSMContext):
     msg = message.text
     await db.update_ban_message(chat_id, msg)
 
-    await message.answer(text="Текст успешно обновлен!")
+    await message.answer(text="Текст успешно обновлен!",
+                         reply_markup=await kb.back_to_text_conf(chat_id))
 
 
 #  -- -- -- -- -- -- -- -- -- -- -- -- -- -- - -- - -- - -- - - - for kick
@@ -180,8 +186,9 @@ async def text_change_kick(callback: CallbackQuery, state: FSMContext):
     await state.set_state(Kick.msg)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Введите сообщение.'
+    await callback.message.edit_text(
+        text='Введите сообщение.',
+        reply_markup=await kb.back_to_text_conf(chat_id)
     )
 
 
@@ -199,7 +206,8 @@ async def text_change_kick_msg(message: Message, state: FSMContext):
     msg = message.text
     await db.update_kick_message(chat_id, msg)
 
-    await message.answer(text="Текст успешно обновлен!")
+    await message.answer(text="Текст успешно обновлен!",
+                         reply_markup=await kb.back_to_text_conf(chat_id))
 
 
 #  -- -- -- -- -- -- -- -- -- -- -- -- -- -- - -- - -- - -- - - - for un
@@ -224,8 +232,9 @@ async def text_change_un(callback: CallbackQuery, state: FSMContext):
     await state.set_state(Un.msg)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Введите сообщение.'
+    await callback.message.edit_text(
+        text='Введите сообщение.',
+        reply_markup=await kb.back_to_text_conf(chat_id)
     )
 
 
@@ -243,4 +252,5 @@ async def text_change_un_msg(message: Message, state: FSMContext):
     msg = message.text
     await db.update_un_message(chat_id, msg)
 
-    await message.answer(text="Текст успешно обновлен!")
+    await message.answer(text="Текст успешно обновлен!",
+                         reply_markup=await kb.back_to_text_conf(chat_id))

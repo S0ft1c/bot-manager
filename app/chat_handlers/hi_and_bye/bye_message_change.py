@@ -24,9 +24,10 @@ async def bye_message_change(callback: CallbackQuery, state: FSMContext):
     await state.set_state(ByeMessageChange.message)
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text=text,
-        parse_mode='Markdown'
+        parse_mode='Markdown',
+        reply_markup=await kb.back_to_bye_config(chat_id)
     )
 
 
@@ -39,5 +40,6 @@ async def bye_message_change_2(message: Message, state: FSMContext):
 
     await db.update_bye_message(chat_id, msg)
     await message.answer(
-        text='Прощальное сообщение успешно изменено!'
+        text='Прощальное сообщение успешно изменено!',
+        reply_markup=await kb.back_to_bye_config(chat_id)
     )

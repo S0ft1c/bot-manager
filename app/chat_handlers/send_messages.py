@@ -31,7 +31,7 @@ async def rass_chat(callback: CallbackQuery, state: FSMContext):
     await state.update_data(chatid=int('-' + callback.data.split('-')[-1]))
     await state.set_state(SendChat.message)
 
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='<i>Производится отправка сообщения ТОЛЬКО в чат.</i>\n' +
         'Отправьте мне сообщение, которое вы хотите отправить.',
         parse_mode='HTML'
@@ -104,7 +104,7 @@ async def rass_group(callback: CallbackQuery, state: FSMContext):
     )
     await state.set_state(SendGroup.message)
 
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='<i>Производится отправка сообщения ТОЛЬКО в чат.</i>\n' +
         'Отправьте мне сообщение, которое вы хотите отправить.',
         parse_mode='HTML'

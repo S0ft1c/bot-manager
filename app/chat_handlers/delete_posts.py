@@ -4,6 +4,9 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from mongo_db import db
+from loguru import logger
+import app.keyboards as kb
+
 
 router_delete_posts = Router()
 
@@ -27,8 +30,9 @@ async def delete_posts(callback: CallbackQuery, state: FSMContext):
     await state.set_state(DelPosts.user)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Теперь введите id пользователя, сообщения которого вы хотите удалить.'
+    await callback.message.edit_text(
+        text='Теперь введите id пользователя, сообщения которого вы хотите удалить.',
+        reply_markup=await kb.back_to_info(chat_id)
     )
 
 
@@ -52,9 +56,11 @@ async def delete_posts_user(message: Message, state: FSMContext):
                 message_id=msg['message_id']
             )
         await message.answer(
-            text='Удаление прошло успешно!'
+            text='Удаление прошло успешно!',
+            reply_markup=await kb.back_to_info(chat_id)
         )
     except Exception as e:
         await message.answer(
-            text=f'Что-то пошло не так... -> {e}'
+            text=f'Что-то пошло не так... -> {e}',
+            reply_markup=await kb.back_to_info(chat_id)
         )

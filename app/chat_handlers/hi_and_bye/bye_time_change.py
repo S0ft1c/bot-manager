@@ -23,8 +23,10 @@ async def bye_time_change(callback: CallbackQuery, state: FSMContext):
     await state.set_state(ByeTimeChange.sleep_time)
 
     await callback.answer('')
-    await callback.message.answer(
-        text=text
+    await callback.message.edit_text(
+        text=text,
+        parse_mode='HTML',
+        reply_markup=await kb.back_to_bye_config(chat_id)
     )
 
 
@@ -38,10 +40,12 @@ async def bye_time_change_2(message: Message, state: FSMContext):
         await db.update_bye_sleep_time(chat_id, sleep_time)
 
         await message.answer(
-            text='Время обновлено!'
+            text='Время обновлено!',
+            reply_markup=await kb.back_to_bye_config(chat_id)
         )
     except Exception as e:
         await message.answer(
             text=f'Что-то пошло не так...\n`{e}`\nПопробуйте еще раз',
-            parse_mode='Markdown'
+            parse_mode='Markdown',
+            reply_markup=await kb.back_to_bye_config(chat_id)
         )

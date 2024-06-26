@@ -4,6 +4,7 @@ from aiogram.types import CallbackQuery, Message
 import app.keyboards as kb
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+from loguru import logger
 
 router_admin_add_remove = Router()
 promote = {
@@ -37,7 +38,7 @@ async def admin_add_remove(callback: CallbackQuery, state: FSMContext):
 
     await state.set_state(AddAdmin.user_id)
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Введите id пользователя, которого хотите сделать администратором.\n' +
         "Или нажмите внизу на существующих, чтобы разжаловать их.",
         reply_markup=await kb.admin_add_remove(admins, chat_id)
@@ -92,11 +93,11 @@ async def delete_admin(callback: CallbackQuery, state: FSMContext):
             **depromote
         )
         await callback.answer('')
-        await callback.message.answer(
+        await callback.message.edit_text(
             text='Админ успешно понижен в звании'
         )
     except Exception as e:
         await callback.answer('')
-        await callback.message.answer(
+        await callback.message.edit_text(
             text=f'Что-то пошло не так... -> {e}\nЕще раз?'
         )

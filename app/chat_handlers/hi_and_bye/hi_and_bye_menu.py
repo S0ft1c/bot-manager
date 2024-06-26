@@ -11,7 +11,9 @@ async def hi_and_bye_menu(callback: CallbackQuery):
     chat_id = callback.data.replace('hi_and_bye_menu', '')
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Выберите, что вы хотите настроить!',
-        reply_markup=await kb.hi_and_buy_menu(chat_id)
+    await callback.message.edit_text(
+        text=f'<b>ID чата: {chat_id}</b>\n' +
+        'Выберите, что вы хотите настроить!',
+        reply_markup=await kb.hi_and_buy_menu(chat_id),
+        parse_mode='HTML'
     )

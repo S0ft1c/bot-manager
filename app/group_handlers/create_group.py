@@ -19,10 +19,11 @@ async def add_group_handler(callback: CallbackQuery, state: FSMContext):
     logger.debug('Adding group...')
     if not is_admin(callback):
         logger.warning(
-            f'Somebody (not an admin) tried to access the bot logic!!! His info -> {message.from_user}')
+            f'Somebody (not an admin) tried to access the bot logic!!! His info -> {callback.message.from_user}')
         return
+    await callback.answer('')
 
-    await callback.message.answer(text='Введите название группы')
+    await callback.message.edit_text(text='Введите название группы')
     await state.set_state(AddGroup.title)
 
 

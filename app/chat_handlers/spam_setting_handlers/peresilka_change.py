@@ -2,6 +2,8 @@ from utils import is_admin
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from mongo_db import db
+from loguru import logger
+import app.keyboards as kb
 
 router_peresilka_change = Router()
 
@@ -19,4 +21,5 @@ async def peresilka_change(callback: CallbackQuery):
     await db.peresilka_change(chat_id)
 
     await callback.answer('')
-    await callback.message.answer(text='Состояние пересылки изменено!')
+    await callback.message.edit_text(text='Состояние пересылки изменено!',
+                                     reply_markup=await kb.back_to_spam_settings_chat(chat_id))

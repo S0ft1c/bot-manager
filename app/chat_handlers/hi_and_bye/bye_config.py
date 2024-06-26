@@ -19,7 +19,7 @@ async def bye_config(callback: CallbackQuery):
         f'\nВремя до удаления сообщения = {sleep_time}'
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text=text,
         reply_markup=await kb.bye_menu(chat_id)
     )

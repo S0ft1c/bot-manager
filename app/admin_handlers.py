@@ -20,7 +20,7 @@ async def command_start(message: Message, command: CommandObject):
         event_user_id = message.from_user.id
         logger.info(chat_id, user_id)
         await db.ref_user_came(chat_id, user_id, event_user_id)
-        
+
         ch_info = await db.get_chat_info_by_id(chat_id)
         link = await message.bot.create_chat_invite_link(chat_id=chat_id)
         await message.answer(
@@ -28,20 +28,24 @@ async def command_start(message: Message, command: CommandObject):
             reply_markup=await kb.start_kbkkbkb(ch_info.get('link', link))
         )
         return
-        
+
     if message.chat.type != 'private':
         return
 
     logger.error('yay')
     await message.answer(
-        text=f"""Здравствуйте, {message.from_user.first_name}!
-Внизу вы видите кнопки, каждая из которых соответствует одному из ваших чатов.
+        text=f"""Здравствуйте, {message.from_user.first_name}! 👋
+Внизу вы видите кнопки, каждая из которых соответствует одному из ваших чатов. 🗂️
 Чтобы бот начал работать в выбранном чате, выполните следующие шаги:
-1) Добавьте бота в чат. ➕
-2) Назначьте бота администратором.
-3) В чате отправьте команду /add_exec, либо в лс бота /add <id чата>.""",
+1️⃣ Добавьте бота в чат. ➕
+2️⃣ Назначьте бота администратором. 👑
+3️⃣ В чате отправьте команду /add_exec, либо в лс бота /add <id чата>. 📝
+
+Также можете просмотреть группы при помощи /group
+""",
         reply_markup=await kb.start_kb()
     )
+
 
 @router_admin_handlers.message(CommandStart(deep_link=True))
 async def command_start(message: Message, command: CommandObject):
@@ -52,7 +56,7 @@ async def command_start(message: Message, command: CommandObject):
         chat_id, user_id = args.split('00000')
         logger.info(chat_id, user_id)
         await db.ref_user_came(chat_id, user_id)
-        
+
         ch_info = await db.get_chat_info_by_id(chat_id)
         link = await message.bot.create_chat_invite_link(chat_id=chat_id)
         await message.answer(
@@ -60,18 +64,21 @@ async def command_start(message: Message, command: CommandObject):
             reply_markup=await kb.start_kbkkbkb(ch_info.get('link', link))
         )
         return
-        
+
     if message.chat.type != 'private':
         return
 
     logger.error('yay')
     await message.answer(
-        text=f"""Здравствуйте, {message.from_user.first_name}!
-Внизу вы видите кнопки, каждая из которых соответствует одному из ваших чатов.
+        text=f"""Здравствуйте, {message.from_user.first_name}! 👋
+Внизу вы видите кнопки, каждая из которых соответствует одному из ваших чатов. 🗂️
 Чтобы бот начал работать в выбранном чате, выполните следующие шаги:
-1) Добавьте бота в чат. ➕
-2) Назначьте бота администратором.
-3) В чате отправьте команду /add_exec, либо в лс бота /add <id чата>.""",
+1️⃣ Добавьте бота в чат. ➕
+2️⃣ Назначьте бота администратором. 👑
+3️⃣ В чате отправьте команду /add_exec, либо в лс бота /add <id чата>. 📝
+
+Также можете просмотреть группы при помощи /group
+""",
         reply_markup=await kb.start_kb()
     )
 
@@ -86,12 +93,10 @@ async def command_add_group(message: Message):
         return
     try:
         chat_id = message.text.split()[-1]
-        link = await message.bot.create_chat_invite_link(chat_id=chat_id)
-        
+
         chat_inf = {
             '_id': chat_id,
             'title': chat_id,  # FIXME: заглушка по title группы, зная только ее id
-            'link': link,
         }
         ress = await db.insert_chat(chat_inf)
 
@@ -103,7 +108,6 @@ async def command_add_group(message: Message):
             await message.answer(text='Чат успешно добавлен!')
     except:
         await message.answer(text='Произошла ошибка при добавлении...')
-        
 
 
 @router_admin_handlers.message(Command('add_exec'))
@@ -114,8 +118,7 @@ async def command_add_exec(message: Message):
         return
 
     try:
-        link = await message.bot.create_chat_invite_link(chat_id=message.chat.id)
-        
+
         if message.chat.type == 'private':
             await message.answer('Данная команда должна быть написана непосредственно в группе!')
         else:
@@ -123,7 +126,6 @@ async def command_add_exec(message: Message):
             chat_inf = {
                 '_id': message.chat.id,
                 'title': message.chat.title,
-                'link': link
             }
             ress = await db.insert_chat(chat_inf)
 

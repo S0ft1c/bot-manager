@@ -27,13 +27,13 @@ async def spam_settings_menu(callback: CallbackQuery):
         'peresilka', False) else 'Отсутствует'
     ssilki = 'Да' if chat_info.get('ssilka', True) else 'Нет'
 
-    text = f'*Группа:* {chat_info["title"]}\n*Спам слова:* {spam_w}\n' + \
-        f'*Запрет пересылающихся сообщений:* {peresilka}\n' + \
-        f'*Ссылки разрешены:* {ssilki}'
+    text = f'<b>Группа:</b> {chat_info["title"]}\n<b>Спам слова:</b> {spam_w}\n' + \
+        f'<b>Запрет пересылающихся сообщений:</b> {peresilka}\n' + \
+        f'<b>Ссылки разрешены:</b> {ssilki}'
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text=text,
         reply_markup=await kb.spam_menu_kb(chat_id),
-        parse_mode='Markdown'
+        parse_mode='HTML'
     )

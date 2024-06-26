@@ -19,9 +19,18 @@ async def get_chat_info(callback: CallbackQuery):
 
     chinf = await db.get_chat_info_by_id('-' + callback.data.split('-')[-1])
 
+    group_id = chinf.get("group_id", None)
+    if group_id:
+        group_info = await db.get_group_info_by_id(group_id)
+        group_info = group_info['title']
+    else:
+        group_info = 'Не в группе'
+
     await callback.message.edit_text(
         text=f'<b>Чат:</b> {chinf["title"]}\n<b>ID чата</b>: {chinf["_id"]}' +
-        f'\n<b>В группе:</b> {chinf.get("group_id", "None")}',
+        f'\n<b>В группе:</b> {group_info}\n\n' +
+        f'<i>Примечания</i> ➡️ \n1) Для того, чтобы постить в группы чатов надо добавить чат в группу. Сделать это можно через /group\n' +
+        f'2) Для того чтобы настроить переливы чатов надо зайти в <b>приветствия</b>',
         parse_mode='HTML',
         reply_markup=await kb.chat_info_kb(chinf["_id"], chinf.get("group_id", False))
     )

@@ -14,39 +14,44 @@ async def hi_config(callback: CallbackQuery):
 
     match hi_config.get('type', False):
         case False:
-            text = 'Выберите тип приветственного сообщения!'
-            await callback.message.answer(
+            text = f'<b>ID чата: {
+                chat_id}</b>\n''Выберите тип приветственного сообщения!'
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.new_hi_config(chat_id)
+                reply_markup=await kb.new_hi_config(chat_id),
+                parse_mode='HTML'
             )
         case 'pereliv':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_pereliv(chat_id)
+                reply_markup=await kb.hi_config_pereliv(chat_id),
+                parse_mode='HTML'
             )
         case 'priglasit':
-            text = f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_priglasit(chat_id)
+                reply_markup=await kb.hi_config_priglasit(chat_id),
+                parse_mode='HTML'
             )
 
         case 'combined':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_combined(chat_id)
+                reply_markup=await kb.hi_config_combined(chat_id),
+                parse_mode='HTML'
             )
 
     await callback.answer('')
@@ -61,39 +66,44 @@ async def hi_type_pereliv(callback: CallbackQuery):
 
     match hi_config.get('type', False):
         case False:
-            text = 'Выберите тип приветственного сообщения!'
-            await callback.message.answer(
+            text = f'<b>ID чата: {
+                chat_id}</b>\n''Выберите тип приветственного сообщения!'
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.new_hi_config(chat_id)
+                reply_markup=await kb.new_hi_config(chat_id),
+                parse_mode='HTML'
             )
         case 'pereliv':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_pereliv(chat_id)
+                reply_markup=await kb.hi_config_pereliv(chat_id),
+                parse_mode='HTML'
             )
         case 'priglasit':
-            text = f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_priglasit(chat_id)
+                reply_markup=await kb.hi_config_priglasit(chat_id),
+                parse_mode='HTML'
             )
 
         case 'combined':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
-                f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+                f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_combined(chat_id)
+                reply_markup=await kb.hi_config_combined(chat_id),
+                parse_mode='HTML'
             )
 
     await callback.answer('')
@@ -108,39 +118,44 @@ async def hi_type_priglasit(callback: CallbackQuery):
 
     match hi_config.get('type', False):
         case False:
-            text = 'Выберите тип приветственного сообщения!'
-            await callback.message.answer(
+            text = f'<b>ID чата: {
+                chat_id}</b>\n''Выберите тип приветственного сообщения!'
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.new_hi_config(chat_id)
+                reply_markup=await kb.new_hi_config(chat_id),
+                parse_mode='HTML'
             )
         case 'pereliv':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_pereliv(chat_id)
+                reply_markup=await kb.hi_config_pereliv(chat_id),
+                parse_mode='HTML'
             )
         case 'priglasit':
-            text = f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_priglasit(chat_id)
+                reply_markup=await kb.hi_config_priglasit(chat_id),
+                parse_mode='HTML'
             )
 
         case 'combined':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
-                f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}' + \
+            text = f'<b>ID чата: {chat_id}</b>\n'f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+                f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_combined(chat_id)
+                reply_markup=await kb.hi_config_combined(chat_id),
+                parse_mode='HTML'
             )
 
     await callback.answer('')
@@ -155,39 +170,44 @@ async def hi_type_combined(callback: CallbackQuery):
 
     match hi_config.get('type', False):
         case False:
-            text = 'Выберите тип приветственного сообщения!'
-            await callback.message.answer(
+            text = f'<b>ID чата: {chat_id}</b>\n' + \
+                'Выберите тип приветственного сообщения!'
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.new_hi_config(chat_id)
+                reply_markup=await kb.new_hi_config(chat_id),
+                parse_mode='HTML'
             )
         case 'pereliv':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n' + f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_pereliv(chat_id)
+                reply_markup=await kb.hi_config_pereliv(chat_id),
+                parse_mode='HTML'
             )
         case 'priglasit':
-            text = f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n' + f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_priglasit(chat_id)
+                reply_markup=await kb.hi_config_priglasit(chat_id),
+                parse_mode='HTML'
             )
 
         case 'combined':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n' + f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_combined(chat_id)
+                reply_markup=await kb.hi_config_combined(chat_id),
+                parse_mode='HTML'
             )
 
     await callback.answer('')
@@ -202,39 +222,44 @@ async def new_hi_confiig(callback: CallbackQuery):
 
     match hi_config.get('type', False):
         case False:
-            text = 'Выберите тип приветственного сообщения!'
-            await callback.message.answer(
+            text = f'<b>ID чата: {chat_id}</b>\n' + \
+                'Выберите тип приветственного сообщения!'
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.new_hi_config(chat_id)
+                reply_markup=await kb.new_hi_config(chat_id),
+                parse_mode='HTML'
             )
         case 'pereliv':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n' + f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_pereliv(chat_id)
+                reply_markup=await kb.hi_config_pereliv(chat_id),
+                parse_mode='HTML'
             )
         case 'priglasit':
-            text = f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n' + f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_priglasit(chat_id)
+                reply_markup=await kb.hi_config_priglasit(chat_id),
+                parse_mode='HTML'
             )
 
         case 'combined':
-            text = f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
+            text = f'<b>ID чата: {chat_id}</b>\n' + f'Указанные каналы для перелива = {len(hi_config.get('channels', []))}\n' + \
                 f'Количество людей, которое надо пригласить = {hi_config.get('members_came', 1)}\n' + \
                 f'Время до удаления сообщения = {
                     hi_config.get('sleep_time', 5)}'
 
-            await callback.message.answer(
+            await callback.message.edit_text(
                 text=text,
-                reply_markup=await kb.hi_config_combined(chat_id)
+                reply_markup=await kb.hi_config_combined(chat_id),
+                parse_mode='HTML'
             )
 
     await callback.answer('')

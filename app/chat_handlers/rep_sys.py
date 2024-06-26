@@ -31,7 +31,7 @@ async def rep_sys_info(callback: CallbackQuery):
         f'Слова, которые поднимают репутацию: {reputation_w}'
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text=text,
         reply_markup=await kb.rep_sys_info(chat_id),
         parse_mode='Markdown'
@@ -50,8 +50,9 @@ async def rep_sys_change(callback: CallbackQuery):
     chat_id = callback.data.replace('rep_sys_change', '')
     await db.rep_sys_workin_change(chat_id)
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Состояние системы репутации изменено!',
+        reply_markup=await kb.back_to_rep_sys(chat_id)
     )
 
 
@@ -74,8 +75,9 @@ async def rep_w_add(callback: CallbackQuery, state: FSMContext):
     await state.update_data(chat_id=chat_id)
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Введите слова, которые вы хотите добавить через запятую и пробел после нее. ПРИМЕР "круто, спасибо, класс"',
+        reply_markup=await kb.back_to_rep_sys(chat_id)
     )
 
 
@@ -94,7 +96,8 @@ async def add_rep_w(message: Message, state: FSMContext):
     words = message.text.split(', ')
     await db.add_rep_w_to_chat(chat_id, words)
     await message.answer(
-        text='Слова добавлены!'
+        text='Слова добавлены!',
+        reply_markup=await kb.back_to_rep_sys(chat_id)
     )
 
 
@@ -117,8 +120,9 @@ async def rep_w_remove(callback: CallbackQuery, state: FSMContext):
     await state.set_state(RemoveRepW.rep_w)
 
     await callback.answer('')
-    await callback.message.answer(
-        text='Введите слова, которые вы хотите убрать через запятую и пробел после нее. ПРИМЕР "круто, спасибо, класс"'
+    await callback.message.edit_text(
+        text='Введите слова, которые вы хотите убрать через запятую и пробел после нее. ПРИМЕР "круто, спасибо, класс"',
+        reply_markup=await kb.back_to_rep_sys(chat_id)
     )
 
 
@@ -137,5 +141,6 @@ async def rep_w_remove_aa(message: Message, state: FSMContext):
     words = message.text.split(', ')
     await db.remove_rep_w_from_chat(chat_id, words)
     await message.answer(
-        text='Слова удалены!'
+        text='Слова удалены!',
+        reply_markup=await kb.back_to_rep_sys(chat_id)
     )

@@ -5,6 +5,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from mongo_db import db
 from loguru import logger
+import app.keyboards as kb
 
 router_lifetime_change = Router()
 
@@ -27,9 +28,10 @@ async def spam_time_life(callback: CallbackQuery, state: FSMContext):
     await state.update_data(chat_id=chat_id)
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Прекрасно! Теперь укажите сколько будут жить сообщения в *СЕКУНДАХ*',
-        parse_mode='Markdown'
+        parse_mode='Markdown',
+        reply_markup=await kb.back_to_spam_settings_chat(chat_id)
     )
     await state.set_state(LifetimeChange.secs)
 
@@ -49,6 +51,8 @@ async def spam_life_time_secs(message: Message, state: FSMContext):
 
         secs = int(message.text)
         await db.update_secs_in_chat(chat_id, secs)
-        await message.answer(text='Время жизни обновлено!')
+        await message.answer(text='Время жизни обновлено!',
+                             reply_markup=await kb.back_to_spam_settings_chat(chat_id))
     except Exception as e:
-        await message.answer(text='Неверный формат секунд(')
+        await message.answer(text='Неверный формат секунд(',
+                             reply_markup=await kb.back_to_spam_settings_chat(chat_id))

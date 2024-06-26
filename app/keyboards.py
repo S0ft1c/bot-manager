@@ -16,40 +16,40 @@ async def start_kb():
 async def chat_info_kb(chatid: str, group_id):
 
     # create a hi and bye
-    hi_and_bye = [InlineKeyboardButton(text='Приветствия и прощания',
+    hi_and_bye = [InlineKeyboardButton(text='Приветствие/Прощание для пользователей',
                                        callback_data='hi_and_bye_menu' + str(chatid))]
 
     # create a send posts
     rassilka = [InlineKeyboardButton(
-        text='Рассылка ТОЛЬКО в чат', callback_data='rass_chat' + str(chatid))]
+        text='Постинг ТОЛЬКО В ЧАТ 📝', callback_data='rass_chat' + str(chatid))]
     if group_id:
         group_title = await db.get_group_info_by_id(group_id)
         rassilka.append(InlineKeyboardButton(
-            text='Рассылка в группу чатов', callback_data='rass_group' + str(chatid)))
+            text='Постинг в группу чатов 📝', callback_data='rass_group' + str(chatid)))
 
     # create a spam settings
     spam_settings = [InlineKeyboardButton(
-        text='Настройки спам фильтров', callback_data='spam_settings_chat' + str(chatid))]
+        text='Фильтр спама 🚫', callback_data='spam_settings_chat' + str(chatid))]
 
     # create a admin add remove
     admin_add_remove = [InlineKeyboardButton(
-        text='Добавить/удалить админов', callback_data='admin_add_remove' + str(chatid))]
+        text='Добавление админов в чат 👥', callback_data='admin_add_remove' + str(chatid))]
 
     # create the text config file
     text_conf = [InlineKeyboardButton(
-        text='Настройка сообщений бота действия в чате.', callback_data='text_conf' + str(chatid))]
+        text='Блокировка и разблокировка участников 🔒', callback_data='text_conf' + str(chatid))]
 
     # create a delete posts
     delete_posts = [InlineKeyboardButton(
-        text='Удаление постов', callback_data='delete_posts' + str(chatid))]
+        text='Удаление постов 🗑', callback_data='delete_posts' + str(chatid))]
 
     # create reputation system
     rep_system = [InlineKeyboardButton(
-        text='Система репутации', callback_data='rep_sys_inf' + str(chatid))]
+        text='Бонусная система', callback_data='rep_sys_inf' + str(chatid))]
 
     # create for the restrict all
     restrict_all = [InlineKeyboardButton(
-        text='Возможность писать сообщения (всем)', callback_data='restrict_all_inf' + str(chatid))]
+        text='Открыть/Закрыть отправку сообщений (в чат)', callback_data='restrict_all_inf' + str(chatid))]
 
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
@@ -72,6 +72,8 @@ async def restrict_all_kb(chat_id):
             text='Запретить всем отправлять сообщения', callback_data='restrict_all_on' + str(chat_id))],
         [InlineKeyboardButton(
             text='Разрешить всем отправлять сообщения', callback_data='restrict_all_off' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='info' + str(chat_id))]
     ])
     return builder
 
@@ -83,9 +85,25 @@ async def rep_sys_info(chat_id):
         [InlineKeyboardButton(text='Добавить слова репутации',
                               callback_data='rep_w_add' + str(chat_id))],
         [InlineKeyboardButton(text='Убрать слова репутации',
-                              callback_data='rep_w_remove' + str(chat_id))]
+                              callback_data='rep_w_remove' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='info' + str(chat_id))]
     ])
     return builder
+
+
+async def back_to_rep_sys(chat_id):
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='rep_sys_inf' + str(chat_id)))
+    return builder.adjust(1).as_markup()
+
+
+async def back_to_restrict_all(chat_id):
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='restrict_all_inf' + str(chat_id)))
+    return builder.adjust(1).as_markup()
 
 
 async def group_kb(groups):
@@ -161,9 +179,32 @@ async def spam_menu_kb(chat_id):
         [InlineKeyboardButton(text='Настройка санкций',
                               callback_data='spam_ssankcii' + chat_id)],
         [InlineKeyboardButton(text='Настройка времени жизни сообщения',
-                              callback_data='spam_time_life' + chat_id)]
+                              callback_data='spam_time_life' + chat_id)],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='info' + str(chat_id))]
     ])
     return builder
+
+
+async def back_to_text_conf(chat_id):
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='text_conf' + str(chat_id)))
+    return builder.adjust(1).as_markup()
+
+
+async def back_to_spam_settings_chat(chat_id):
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='spam_settings_chat' + str(chat_id)))
+    return builder.adjust(1).as_markup()
+
+
+async def back_to_info(chat_id):
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='info' + str(chat_id)))
+    return builder.adjust(1).as_markup()
 
 
 async def spam_sanctions(chat_id):
@@ -181,14 +222,16 @@ async def spam_sanctions(chat_id):
     for name in sss:
         if name[1] == sanction:
             builder.add(InlineKeyboardButton(
-                text=name[0] + '!!!',
+                text=name[0] + '✅',
                 callback_data='change_sanction' + name[1] + chat_id
             ))
         else:
             builder.add(InlineKeyboardButton(
-                text=name[0],
+                text=name[0] + '❌',
                 callback_data='change_sanction' + name[1] + chat_id
             ))
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='spam_settings_chat' + str(chat_id)))
     return builder.adjust(1).as_markup()
 
 
@@ -200,6 +243,8 @@ async def admin_add_remove(admins, chat_id):
             text=f'Удалить {admin.user.first_name}',
             callback_data='delete_admin' + str(admin.user.id) + str(chat_id)
         ))
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='info' + str(chat_id)))
     return builder.adjust(1).as_markup()
 
 
@@ -215,6 +260,8 @@ async def text_conf_kb(chat_id):
                               callback_data='text_change_kick' + str(chat_id))],
         [InlineKeyboardButton(text='Снятие ограничеий /un',
                               callback_data='text_change_un' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='info' + str(chat_id))]
     ])
     return builder
 
@@ -225,6 +272,8 @@ async def hi_and_buy_menu(chat_id):
                               callback_data='hi_config' + str(chat_id))],
         [InlineKeyboardButton(text='Прощальное сообщение',
                               callback_data='bye_config' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='info' + str(chat_id))]
     ])
     return builder
 
@@ -234,7 +283,9 @@ async def bye_menu(chat_id):
         [InlineKeyboardButton(text='Изменить сообщение',
                               callback_data='bye_message_change' + str(chat_id))],
         [InlineKeyboardButton(text='Изменить время до удаления',
-                              callback_data='bye_time_change' + str(chat_id))]
+                              callback_data='bye_time_change' + str(chat_id))],
+        [InlineKeyboardButton(text='Назад 🔙',
+                              callback_data='info' + str(chat_id))]
     ])
     return builder
 
@@ -246,7 +297,9 @@ async def new_hi_config(chat_id):
         [InlineKeyboardButton(text='Пригласить определенное количество людей',
                               callback_data='hi_type_priglasit' + str(chat_id))],
         [InlineKeyboardButton(text='Использовать и то и другое',
-                              callback_data='hi_type_combined' + str(chat_id))]
+                              callback_data='hi_type_combined' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='hi_and_bye_menu' + str(chat_id))]
     ])
     return builder
 
@@ -260,9 +313,25 @@ async def hi_config_pereliv(chat_id):
         [InlineKeyboardButton(text='Изменить время до удаления',
                               callback_data='hi_time_change' + str(chat_id))],
         [InlineKeyboardButton(text='Поменять конфигурацию (ВСЕ УДАЛИТСЯ)',
-                              callback_data='new_hi_confiig' + str(chat_id))]
+                              callback_data='new_hi_confiig' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='hi_and_bye_menu' + str(chat_id))]
     ])
     return builder
+
+
+async def back_to_pereliv(chat_id):
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='hi_and_bye_menu' + str(chat_id)))
+    return builder.adjust(1).as_markup()
+
+
+async def back_to_bye_config(chat_id):
+    builder = InlineKeyboardBuilder()
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='bye_config' + str(chat_id)))
+    return builder.adjust(1).as_markup()
 
 
 async def hi_config_priglasit(chat_id):
@@ -274,7 +343,9 @@ async def hi_config_priglasit(chat_id):
         [InlineKeyboardButton(text='Изменить время до удаления',
                               callback_data='hi_time_change' + str(chat_id))],
         [InlineKeyboardButton(text='Поменять конфигурацию (ВСЕ УДАЛИТСЯ)',
-                              callback_data='new_hi_confiig' + str(chat_id))]
+                              callback_data='new_hi_confiig' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='hi_and_bye_menu' + str(chat_id))]
     ])
     return builder
 
@@ -290,16 +361,20 @@ async def hi_config_combined(chat_id):
         [InlineKeyboardButton(text='Изменить время до удаления',
                               callback_data='hi_time_change' + str(chat_id))],
         [InlineKeyboardButton(text='Поменять конфигурацию (ВСЕ УДАЛИТСЯ)',
-                              callback_data='new_hi_confiig' + str(chat_id))]
+                              callback_data='new_hi_confiig' + str(chat_id))],
+        [InlineKeyboardButton(
+            text='Назад 🔙', callback_data='hi_and_bye_menu' + str(chat_id))]
     ])
     return builder
 
 
-async def hi_pereliv_chanells(channels):
+async def hi_pereliv_chanells(channels, chat_id):
     builder = InlineKeyboardBuilder()
     for el in channels:
         builder.add(InlineKeyboardButton(text=f'УДАЛИТЬ {el}',
                                          callback_data='hi_del_channel' + el))
+    builder.add(InlineKeyboardButton(
+        text='Назад 🔙', callback_data='hi_type_pereliv' + str(chat_id)))
     return builder.adjust(1).as_markup()
 
 

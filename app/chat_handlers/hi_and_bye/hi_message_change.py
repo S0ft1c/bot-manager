@@ -4,6 +4,7 @@ from aiogram.types import CallbackQuery, Message
 from mongo_db import db
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
+import app.keyboards as kb
 
 
 class ChangeMessage(StatesGroup):
@@ -19,15 +20,17 @@ async def hi_message_change(callback: CallbackQuery, state: FSMContext):
     chat_id = callback.data.replace('hi_message_change', '')
     hi_config = await db.get_hi_config(chat_id)
 
-    text = f'Текущий текст сообщения:\n{hi_config.get('message', 'тут пусто...')}\n' + \
+    text = f'Текущий текст сообщения:\n---\n{hi_config.get('message', 'тут пусто...')}\n---\n' + \
         f'Введите свой текст, чтобы изменить этот. Используйте `%username%`, чтобы вставить имя пользователя.'
 
     await state.update_data(chat_id=chat_id)
     await state.set_state(ChangeMessage.message)
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text=text,
+        parse_mode='HTML',
+        reply_markup=await kb.back_to_pereliv(chat_id)
     )
 
 
@@ -41,5 +44,6 @@ async def hi_change_message_2(message: Message, state: FSMContext):
     await db.change_hi_message(chat_id, msg)
 
     await message.answer(
-        text='Сообщение успешно изменено'
+        text='Сообщение успешно изменено',
+        reply_markup=await kb.back_to_pereliv(chat_id)
     )

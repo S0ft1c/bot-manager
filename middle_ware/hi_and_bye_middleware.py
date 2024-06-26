@@ -5,6 +5,7 @@ from typing import *
 from mongo_db import db
 from asyncio import sleep
 import app.keyboards as kb
+from aiogram.utils.deep_linking import create_start_link
 
 
 class HiAndByeMiddleware(BaseMiddleware):
@@ -57,27 +58,41 @@ class HiAndByeMiddleware(BaseMiddleware):
                         return await handler(event, data)
 
                     case 'priglasit':
-                        link = f'https://t.me/stephans_programming_test_bot?start={
-                            event.chat.id}|{event.from_user.id}'
+                        # link = f'https://t.me/stephans_programming_test_bot?start={
+                        #     event.chat.id}|{event.from_user.id}'
+                        # members_came = len(hi_config.get('members_came')) - 1
+                        # sleep_time = hi_config.get('sleep_time')
+                        # message = hi_config.get('message')
+                        # message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
+                        #             f'Тебе надо пригласить {members_came}.')
+                        # result_msg = await event.bot.send_message(
+                        #     text=message,
+                        #     chat_id=event.chat.id
+                        # )
+                        # await sleep(sleep_time)
+                        # await result_msg.delete()
+                        # return await handler(event, data)
+                        link = await create_start_link(event.bot, f'{event.chat.id}00000{event.from_user.id}', False)
+                        # link = f'https://t.me/stephans_programming_test_bot?start={
+                        #     event.chat.id}|{event.from_user.id}'
                         members_came = hi_config.get('members_came')
                         sleep_time = hi_config.get('sleep_time')
                         message = hi_config.get('message')
                         message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
                                     f'Тебе надо пригласить {members_came}.')
                         result_msg = await event.bot.send_message(
+                            chat_id=event.chat.id,
                             text=message,
-                            chat_id=event.chat.id
                         )
                         await sleep(sleep_time)
                         await result_msg.delete()
-                        return await handler(event, data)
 
                     case 'combined':
                         message = hi_config.get('message')
 
                         link = f'https://t.me/stephans_programming_test_bot?start={
                             event.chat.id}|{event.from_user.id}'
-                        members_came = hi_config.get(members_came)
+                        members_came = len(hi_config.get(members_came)) - 1
                         message = hi_config.get('message')
                         message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
                                     f'Тебе надо пригласить {members_came}.')
@@ -95,5 +110,5 @@ class HiAndByeMiddleware(BaseMiddleware):
                         return await handler(event, data)
 
         except Exception as e:
-            pass
+            logger.error(e)
         return await handler(event, data)

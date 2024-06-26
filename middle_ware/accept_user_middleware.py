@@ -39,7 +39,10 @@ class AcceptMessageMiddleware(BaseMiddleware):
                         await event.delete()
                 case 'priglasit':
                     members_cnt = await db.get_came_users(event.chat.id, event.from_user.id)
-                    members_cnt = set(members_cnt) - 1
+                    logger.info(members_cnt)
+                    members_cnt = len(set(members_cnt)) - 1
+
+                    logger.info(f'member_came = {members_cnt}')
 
                     if members_cnt >= hi_config.get('members_came', 5):
                         return await handler(event, data)
@@ -58,7 +61,7 @@ class AcceptMessageMiddleware(BaseMiddleware):
                         await event.delete()
 
                     members_cnt = await db.get_came_users(event.chat.id, event.from_user.id)
-                    members_cnt = set(members_cnt) - 1
+                    members_cnt = len(set(members_cnt)) - 1
 
                     logger.info(f'member_came = {members_cnt}')
                     if members_cnt >= hi_config.get('members_came', 5):
@@ -77,6 +80,7 @@ async def shit(event: Message):
             pass
         case 'pereliv':
             message = hi_config.get('message')
+            message = message.replace('%username%', event.from_user.full_name)
             channels = hi_config.get('channels')
             lll = [await event.bot.create_chat_invite_link(chat_id=el) for el in channels]
             sleep_time = hi_config.get('sleep_time', 5)
@@ -92,9 +96,10 @@ async def shit(event: Message):
             link = await create_start_link(event.bot, f'{event.chat.id}00000{event.from_user.id}', False)
             # link = f'https://t.me/stephans_programming_test_bot?start={
             #     event.chat.id}|{event.from_user.id}'
-            members_came = hi_config.get(members_came)
+            members_came = hi_config.get('members_came')
             sleep_time = hi_config.get('sleep_time')
             message = hi_config.get('message')
+            message = message.replace('%username%', event.from_user.full_name)
             message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
                         f'Тебе надо пригласить {members_came}.')
             result_msg = await event.bot.send_message(
@@ -109,6 +114,7 @@ async def shit(event: Message):
             link = await create_start_link(event.bot, f'{event.chat.id}00000{event.from_user.id}', False)
             members_came = hi_config.get('members_came')
             message = hi_config.get('message')
+            message = message.replace('%username%', event.from_user.full_name)
             message += (f'\nТвоя ссылка для приглашения -> {link}\n' +
                         f'Тебе надо пригласить {members_came}.')
 

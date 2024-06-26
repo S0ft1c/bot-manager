@@ -23,8 +23,9 @@ async def hi_members_came_change(callback: CallbackQuery, state: FSMContext):
     await state.set_state(MembersChange.cnt)
 
     await callback.answer('')
-    await callback.message.answer(
-        text=text
+    await callback.message.edit_text(
+        text=text,
+        reply_markup=await kb.back_to_pereliv(chat_id)
     )
 
 
@@ -38,10 +39,12 @@ async def hi_members_came_change_2(message: Message, state: FSMContext):
         await db.update_members_change(chat_id, cnt)
 
         await message.answer(
-            text='Количество людей обновлено!'
+            text='Количество людей обновлено!',
+            reply_markup=await kb.back_to_pereliv(chat_id)
         )
     except Exception as e:
         await message.answer(
             text=f'Что-то пошло не так...\n`{e}`\nПопробуйте еще раз',
-            parse_mode='Markdown'
+            parse_mode='Markdown',
+            reply_markup=await kb.back_to_pereliv(chat_id)
         )

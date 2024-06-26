@@ -2,6 +2,8 @@ from utils import is_admin
 from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from mongo_db import db
+from loguru import logger
+import app.keyboards as kb
 
 router_ssilka_change = Router()
 
@@ -19,4 +21,5 @@ async def ssilka_change(callback: CallbackQuery):
     await db.ssilka_change(chat_id)
 
     await callback.answer('')
-    await callback.message.answer(text='Состояние ссылок изменено!')
+    await callback.message.edit_text(text='Состояние ссылок изменено!',
+                                     reply_markup=await kb.back_to_spam_settings_chat(chat_id))

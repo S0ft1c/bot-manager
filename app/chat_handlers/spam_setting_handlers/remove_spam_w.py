@@ -4,6 +4,8 @@ from aiogram.types import CallbackQuery, Message
 from aiogram.fsm.state import State, StatesGroup
 from aiogram.fsm.context import FSMContext
 from mongo_db import db
+from loguru import logger
+import app.keyboards as kb
 
 router_remove_spam_w = Router()
 
@@ -27,8 +29,9 @@ async def remove_spam_w(callback: CallbackQuery, state: FSMContext):
     await state.set_state(RemoveSpamW.words)
 
     await callback.answer('')
-    await callback.message.answer(
+    await callback.message.edit_text(
         text='Теперь введите слова, которые вы хотите удалить через запятую',
+        reply_markup=await kb.back_to_spam_settings_chat(chat_id)
     )
 
 
@@ -46,4 +49,5 @@ async def remove_spam_w_2(message: Message, state: FSMContext):
     chat_id = chat_id['chat_id']
 
     await db.remove_spam_w_from_chat(chat_id, words)
-    await message.answer(text='Слова были успешно удалены!')
+    await message.answer(text='Слова были успешно удалены!',
+                         reply_markup=await kb.back_to_spam_settings_chat(chat_id))

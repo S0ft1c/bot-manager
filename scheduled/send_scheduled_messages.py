@@ -24,4 +24,4 @@ async def send_scheduled_messages(bot: Bot):
                         await chat_sender(bot, msg)
                     else:
                         await group_sender(bot, msg)
-        await sleep(60 * 5)  # every 5 minutes
+        await sleep(60)  # every minute

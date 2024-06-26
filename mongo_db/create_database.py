@@ -534,12 +534,14 @@ class DB:
 
     async def get_came_users(self, chat_id, user_id):
         try:
-            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get(str(user_id), 0)
+            return [el for el in self.chats.find({'_id': int(chat_id)})][0].get(str(user_id), [])
         except Exception as e:
             logger.error(e)
 
     async def ref_user_came(self, chat_id, user_id, event_user_id):
         try:
+            user_id = str(user_id)
+            event_user_id = str(event_user_id)
             ch_info = [el for el in self.chats.find({'_id': int(chat_id)})][0]
             user_info = ch_info.get(user_id, [])
             user_info.append(event_user_id)
