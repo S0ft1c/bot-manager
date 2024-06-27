@@ -1,6 +1,6 @@
 from aiogram import Router, F
 from aiogram.filters import CommandStart, Command, CommandObject
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from loguru import logger
 from utils import is_admin
 from mongo_db import db
@@ -108,6 +108,17 @@ async def command_add_group(message: Message):
             await message.answer(text='Чат успешно добавлен!')
     except:
         await message.answer(text='Произошла ошибка при добавлении...')
+
+
+@router_admin_handlers.callback_query(F.data.contains('ddd_chat'))
+async def ddd_chat(callback: CallbackQuery):
+    chat_id = callback.data.replace('ddd_chat', '')
+    await db.delete_chat_by_id(chat_id)
+
+    await callback.answer('')
+    await callback.message.answer(
+        text='Чат успешно удален!'
+    )
 
 
 @router_admin_handlers.message(Command('add_exec'))

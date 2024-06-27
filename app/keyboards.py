@@ -51,6 +51,11 @@ async def chat_info_kb(chatid: str, group_id):
     restrict_all = [InlineKeyboardButton(
         text='Открыть/Закрыть отправку сообщений (в чат)', callback_data='restrict_all_inf' + str(chatid))]
 
+    # create for deleting chat
+    delete_chat = [InlineKeyboardButton(
+        text='Удалить чат', callback_data='ddd_chat' + str(chatid)
+    )]
+
     builder = InlineKeyboardMarkup(
         inline_keyboard=[
             hi_and_bye,
@@ -60,7 +65,8 @@ async def chat_info_kb(chatid: str, group_id):
             text_conf,
             delete_posts,
             rep_system,
-            restrict_all
+            restrict_all,
+            delete_chat
         ],
     )
     return builder

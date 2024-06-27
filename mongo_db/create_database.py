@@ -55,6 +55,12 @@ class DB:
     async def get_chats_info(self):
         return [el for el in self.chats.find()]
 
+    async def delete_chat_by_id(self, chat_id):
+        try:
+            self.chats.delete_one({'_id': int(chat_id)})
+        except Exception as e:
+            logger.error(e)
+
     async def insert_chat(self, data: dict) -> bool:
         try:
             candidates = [el for el in self.chats.find({'_id': data['_id']})]
